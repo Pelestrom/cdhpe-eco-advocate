@@ -1,73 +1,148 @@
-# Welcome to your Lovable project
+# Site Web CDHPE
 
-## Project info
+Site web moderne pour le **Comité de Défense des Droits de l'Homme et de la Protection de l'Environnement (CDHPE)** développé avec React, TypeScript, Tailwind CSS et Vite.
 
-**URL**: https://lovable.dev/projects/2ec31d12-884d-4cc3-839d-d2ca4084217b
+## 🌟 Fonctionnalités
 
-## How can I edit this code?
+- **Design moderne et responsive** : Interface élégante inspirée du logo bleu/vert du CDHPE
+- **Navigation intuitive** : Accueil, Actualités, Événements, Nous soutenir
+- **Système d'actualités** : Articles avec pagination, recherche et filtrage par catégorie
+- **Gestion d'événements** : Événements à venir et passés avec système d'inscription
+- **Formulaires de contact** : Pour les dons, bénévolat et partenariats
+- **Architecture modulaire** : Composants réutilisables et code maintenable
+- **Accessibilité** : Balises sémantiques, navigation clavier, contrastes optimisés
+- **SEO optimisé** : Meta tags, structure sémantique, URLs propres
 
-There are several ways of editing your application.
+## 🚀 Installation et Développement
 
-**Use Lovable**
+### Prérequis
+- Node.js (version 16 ou plus récente)
+- npm ou yarn
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/2ec31d12-884d-4cc3-839d-d2ca4084217b) and start prompting.
+### Installation
+```bash
+# Cloner le projet
+git clone [URL_DU_REPO]
+cd cdhpe-website
 
-Changes made via Lovable will be committed automatically to this repo.
+# Installer les dépendances
+npm install
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Démarrer le serveur de développement
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Le site sera accessible à l'adresse `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Scripts disponibles
+```bash
+# Développement
+npm run dev
 
-**Use GitHub Codespaces**
+# Build de production
+npm run build
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Prévisualisation du build
+npm run preview
 
-## What technologies are used for this project?
+# Linting
+npm run lint
 
-This project is built with:
+# Vérification TypeScript
+npm run type-check
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🏗️ Architecture du Projet
 
-## How can I deploy this project?
+```
+src/
+├── components/           # Composants réutilisables
+│   ├── ui/              # Composants UI de base (shadcn)
+│   ├── Header.tsx       # En-tête avec navigation
+│   ├── Footer.tsx       # Pied de page
+│   ├── Hero.tsx         # Section héros
+│   ├── NewsCard.tsx     # Carte d'actualité
+│   └── EventCard.tsx    # Carte d'événement
+├── pages/               # Pages de l'application
+│   ├── Index.tsx        # Page d'accueil
+│   ├── Actualites.tsx   # Liste des actualités
+│   ├── ArticleDetail.tsx # Détail d'un article
+│   ├── Evenement.tsx    # Liste des événements
+│   └── NousSoutenir.tsx # Page de soutien
+├── services/            # Services et API
+│   └── apiClient.ts     # Client API (prêt pour Supabase)
+├── data/               # Données JSON (temporaire)
+│   ├── news.json       # Articles d'actualité
+│   └── events.json     # Événements
+└── hooks/              # Hooks React personnalisés
+```
 
-Simply open [Lovable](https://lovable.dev/projects/2ec31d12-884d-4cc3-839d-d2ca4084217b) and click on Share -> Publish.
+## 🎨 Système de Design
 
-## Can I connect a custom domain to my Lovable project?
+Le site utilise un système de design basé sur les couleurs du logo CDHPE :
+- **Primaire** : Bleu CDHPE (#2BB5CE approximatif)
+- **Secondaire** : Vert CDHPE (#4ADE80 approximatif)
+- **Dégradés** : Transitions harmonieuses bleu vers vert
+- **Typographie** : System fonts avec hiérarchie claire
+- **Espacement** : Grille cohérente basée sur Tailwind CSS
 
-Yes, you can!
+### Composants UI
+- Utilisation de shadcn/ui pour les composants de base
+- Variantes personnalisées avec les couleurs CDHPE
+- Animations subtiles et transitions fluides
+- Focus sur l'accessibilité et l'expérience utilisateur
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 📱 Responsive Design
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Le site s'adapte à tous les écrans :
+- **Mobile** : Navigation hamburger, cartes empilées, contenu optimisé
+- **Tablette** : Grilles adaptatives, navigation simplifiée
+- **Desktop** : Layout complet, navigation horizontale, grilles multi-colonnes
+
+## 🔗 Intégration Future avec Supabase
+
+Le code est préparé pour une intégration facile avec Supabase :
+- Structure des données compatible
+- Client API abstrait (voir `src/services/apiClient.ts`)
+- Types TypeScript définis
+- Variables d'environnement configurées (voir `.env.example`)
+
+### Fonctionnalités Supabase prévues :
+- Authentification des administrateurs
+- Base de données pour actualités et événements
+- Système de commentaires
+- Gestion des inscriptions aux événements
+- Envoi d'emails automatisés
+
+## 🌐 SEO et Performance
+
+- **Meta tags** optimisés pour le référencement
+- **Structure sémantique** HTML5
+- **Images optimisées** avec attributs alt
+- **URLs propres** et lisibles
+- **Chargement rapide** grâce à Vite
+- **Bundle optimisé** pour la production
+
+## 🤝 Contribution
+
+Pour contribuer au projet :
+1. Forkez le repository
+2. Créez une branche pour votre feature (`git checkout -b feature/nouvelle-fonctionnalite`)
+3. Committez vos changements (`git commit -m 'Ajout nouvelle fonctionnalité'`)
+4. Poussez vers la branche (`git push origin feature/nouvelle-fonctionnalite`)
+5. Ouvrez une Pull Request
+
+## 📄 Licence
+
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+
+## 📞 Support
+
+Pour toute question ou problème :
+- Email : contact@cdhpe.org
+- Issues GitHub : [Lien vers les issues]
+
+---
+
+**CDHPE** - Comité de Défense des Droits de l'Homme et de la Protection de l'Environnement  
+*Ensemble pour un avenir juste et durable*

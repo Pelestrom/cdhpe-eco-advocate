@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "slug": "droits-de-lhomme-environnement-lien-indissociable",
+    "title": "Droits de l'Homme et Environnement : Un lien indissociable",
+    "summary": "L'analyse des interconnexions entre la protection de l'environnement et la garantie des droits humains fondamentaux dans nos sociétés contemporaines.",
+    "content": "La protection de l'environnement et la défense des droits de l'homme sont deux causes intimement liées. Un environnement sain est un prérequis fondamental pour la jouissance de nombreux droits humains, notamment le droit à la vie, à la santé, à l'eau potable et à un niveau de vie suffisant.\n\nLes populations les plus vulnérables sont souvent les premières victimes de la dégradation environnementale. C'est pourquoi le CDHPE s'engage quotidiennement pour sensibiliser aux enjeux environnementaux tout en défendant les droits des personnes les plus exposées.\n\nNos actions s'articulent autour de la formation, de la sensibilisation et de l'accompagnement juridique des victimes d'atteintes à l'environnement.",
+    "date": "2024-01-15",
+    "image": "/api/placeholder/600/400",
+    "category": "Droits de l'Homme",
+    "author": "CDHPE",
+    "featured": true
+  },
+  {
+    "id": 2,
+    "slug": "formation-jeunes-leaders-environnementaux",
+    "title": "Formation des jeunes leaders environnementaux",
+    "summary": "Programme de formation destiné aux jeunes engagés dans la protection de l'environnement et la défense des droits humains.",
+    "content": "Le CDHPE lance un programme ambitieux de formation destiné aux jeunes de 18 à 35 ans souhaitant s'engager activement dans la protection de l'environnement et la défense des droits de l'homme.\n\nCette formation comprend des modules sur :\n- Les outils juridiques de protection environnementale\n- Les techniques de plaidoyer et de sensibilisation\n- L'organisation communautaire\n- La communication digitale pour l'engagement citoyen\n\nLes candidatures sont ouvertes jusqu'au 30 mars 2024.",
+    "date": "2024-01-10",
+    "image": "/api/placeholder/600/400",
+    "category": "Formation",
+    "author": "Équipe Formation CDHPE",
+    "featured": true
+  },
+  {
+    "id": 3,
+    "slug": "rapport-annuel-2023-bilan-actions",
+    "title": "Rapport annuel 2023 : Bilan de nos actions",
+    "summary": "Découvrez le bilan détaillé de nos actions menées en 2023 en faveur des droits de l'homme et de la protection environnementale.",
+    "content": "L'année 2023 a été marquée par des avancées significatives dans nos missions de défense des droits de l'homme et de protection de l'environnement.\n\nNos réalisations en chiffres :\n- 150 personnes accompagnées juridiquement\n- 25 formations organisées\n- 12 campagnes de sensibilisation\n- 5 rapports d'expertise environnementale\n- 3 victoires judiciaires majeures\n\nCe rapport détaille également nos perspectives pour 2024 et nos nouveaux projets.",
+    "date": "2024-01-05",
+    "image": "/api/placeholder/600/400",
+    "category": "Rapport",
+    "author": "Direction CDHPE",
+    "featured": true
+  },
+  {
+    "id": 4,
+    "slug": "campagne-sensibilisation-pollution-urbaine",
+    "title": "Campagne de sensibilisation sur la pollution urbaine",
+    "summary": "Lancement d'une campagne nationale pour sensibiliser aux enjeux de la pollution urbaine et ses impacts sur la santé publique.",
+    "content": "Face à l'augmentation alarmante de la pollution urbaine et ses conséquences sur la santé des populations, le CDHPE lance une campagne nationale de sensibilisation.\n\nCette campagne vise à :\n- Informer sur les risques sanitaires liés à la pollution\n- Promouvoir des solutions alternatives de transport\n- Sensibiliser aux gestes éco-responsables\n- Plaider pour des politiques publiques plus ambitieuses\n\nDes événements seront organisés dans plusieurs villes du pays.",
+    "date": "2023-12-20",
+    "image": "/api/placeholder/600/400",
+    "category": "Campagne",
+    "author": "Équipe Communication CDHPE",
+    "featured": false
+  },
+  {
+    "id": 5,
+    "slug": "atelier-droits-femmes-environnement",
+    "title": "Atelier : Droits des femmes et environnement",
+    "summary": "Organisation d'un atelier spécialisé sur l'intersection entre les droits des femmes et les enjeux environnementaux.",
+    "content": "Les femmes sont souvent en première ligne face aux défis environnementaux, tout en étant sous-représentées dans les processus de décision environnementale.\n\nCet atelier abordera :\n- L'impact différencié des changements climatiques sur les femmes\n- Le rôle des femmes dans la conservation environnementale\n- L'accès équitable aux ressources naturelles\n- Le leadership féminin en matière environnementale\n\nL'événement aura lieu le 8 mars 2024 à l'occasion de la Journée internationale des droits des femmes.",
+    "date": "2023-12-15",
+    "image": "/api/placeholder/600/400",
+    "category": "Atelier",
+    "author": "Équipe Genre et Environnement",
+    "featured": false
+  }
+]
