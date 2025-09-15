@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Wallet, Smartphone } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -91,7 +91,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Social Media */}
+          {/* Social Media & Payment */}
           <div className="space-y-4">
             <h4 className="text-sm font-semibold text-foreground">Suivez-nous</h4>
             <div className="flex space-x-4">
@@ -112,11 +112,30 @@ const Footer = () => {
               <a
                 href="#"
                 className="p-2 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors"
-                aria-label="LinkedIn"
+                aria-label="Instagram"
               >
-                <Linkedin className="h-4 w-4" />
+                <Instagram className="h-4 w-4" />
               </a>
             </div>
+            
+            <div className="mt-6">
+              <h4 className="text-sm font-semibold text-foreground mb-3">Paiements mobiles</h4>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-3">
+                  <Wallet className="h-4 w-4 text-primary" />
+                  <span className="text-sm text-muted-foreground">
+                    Wave: +243 XXX XXX XXX
+                  </span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Smartphone className="h-4 w-4 text-primary" />
+                  <span className="text-sm text-muted-foreground">
+                    Orange Money: +243 XXX XXX XXX
+                  </span>
+                </div>
+              </div>
+            </div>
+            
             <p className="text-xs text-muted-foreground">
               Restez informé de nos actions et événements
             </p>

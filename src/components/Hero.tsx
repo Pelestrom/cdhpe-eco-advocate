@@ -1,13 +1,19 @@
 import { ArrowRight, Heart, Shield, Leaf } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import heroImage from '@/assets/hero-presentation.jpg';
 
 const Hero = () => {
   return (
     <section className="relative overflow-hidden">
       {/* Hero Background with Gradient */}
-      <div className="hero-gradient">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+      <div className="hero-gradient relative">
+        {/* Background Image - couvre la moitié droite */}
+        <div 
+          className="absolute inset-y-0 right-0 w-1/2 bg-cover bg-center opacity-20"
+          style={{ backgroundImage: `url(${heroImage})` }}
+        />
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <div className="space-y-8 animate-fade-in">
@@ -36,7 +42,7 @@ const Hero = () => {
                   <Button 
                     size="lg" 
                     variant="outline" 
-                    className="border-white/30 text-white hover:bg-white/10 font-semibold px-8 py-4 text-lg"
+                    className="border-white text-white hover:bg-white hover:text-primary font-semibold px-8 py-4 text-lg"
                   >
                     Découvrir nos actions
                   </Button>
