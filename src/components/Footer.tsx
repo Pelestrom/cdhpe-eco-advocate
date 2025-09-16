@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Wallet, Smartphone } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -55,15 +55,19 @@ const Footer = () => {
                   Évènements
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/nous-soutenir"
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Nous soutenir
-                </Link>
-              </li>
             </ul>
+            
+            <div className="pt-4 border-t border-border">
+              <Link
+                to="/nous-soutenir"
+                className="inline-flex items-center text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+              >
+                Nous soutenir
+              </Link>
+              <p className="text-xs text-muted-foreground mt-2">
+                Soutenez nos actions pour les droits humains et l'environnement
+              </p>
+            </div>
           </div>
 
           {/* Contact Info */}
@@ -91,53 +95,35 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Social Media & Payment */}
+          {/* Social Media */}
           <div className="space-y-4">
             <h4 className="text-sm font-semibold text-foreground">Suivez-nous</h4>
             <div className="flex space-x-4">
               <a
                 href="#"
-                className="p-2 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors"
+                className="p-2 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors button-3d"
                 aria-label="Facebook"
               >
                 <Facebook className="h-4 w-4" />
               </a>
               <a
                 href="#"
-                className="p-2 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors"
+                className="p-2 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors button-3d"
                 aria-label="Twitter"
               >
                 <Twitter className="h-4 w-4" />
               </a>
               <a
                 href="#"
-                className="p-2 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors"
-                aria-label="Instagram"
+                className="p-2 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors button-3d"
+                aria-label="LinkedIn"
               >
-                <Instagram className="h-4 w-4" />
+                <Linkedin className="h-4 w-4" />
               </a>
             </div>
             
-            <div className="mt-6">
-              <h4 className="text-sm font-semibold text-foreground mb-3">Paiements mobiles</h4>
-              <div className="space-y-2">
-                <div className="flex items-center space-x-3">
-                  <Wallet className="h-4 w-4 text-primary" />
-                  <span className="text-sm text-muted-foreground">
-                    Wave: +243 XXX XXX XXX
-                  </span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Smartphone className="h-4 w-4 text-primary" />
-                  <span className="text-sm text-muted-foreground">
-                    Orange Money: +243 XXX XXX XXX
-                  </span>
-                </div>
-              </div>
-            </div>
-            
             <p className="text-xs text-muted-foreground">
-              Restez informé de nos actions et événements
+              Restez informé de nos actions et événements sur les réseaux sociaux
             </p>
           </div>
         </div>

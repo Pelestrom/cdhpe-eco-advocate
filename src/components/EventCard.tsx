@@ -73,30 +73,33 @@ const EventCard = ({ event }: EventCardProps) => {
 
   return (
     <>
-      <Card className="card-hover">
-        <CardHeader className="p-0">
-          <div className="relative overflow-hidden rounded-t-lg">
-            <img
-              src={event.image}
-              alt={event.title}
-              className="w-full h-48 object-cover"
-            />
-            <div className="absolute top-4 left-4 flex space-x-2">
-              <Badge className={getStatusColor(event.status)}>
-                {getStatusText(event.status)}
-              </Badge>
-              <Badge variant="outline" className="bg-background/90">
-                {event.type}
-              </Badge>
-            </div>
+      <div className="bg-card rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 card-3d">
+        <div className="aspect-video relative overflow-hidden">
+          <img
+            src={event.image}
+            alt={event.title}
+            className="w-full h-48 object-cover"
+          />
+          <div className="absolute top-4 left-4 flex space-x-2">
+            <span className={`px-3 py-1 rounded-full text-sm font-medium animate-glow ${
+              event.status === 'upcoming' 
+                ? 'bg-green-500 text-white' 
+                : event.status === 'past'
+                ? 'bg-gray-500 text-white'
+                : 'bg-blue-500 text-white'
+            }`}>
+              {event.status === 'upcoming' ? 'À venir' : 
+               event.status === 'past' ? 'Terminé' : 'En cours'}
+            </span>
+            <Badge variant="outline" className="bg-background/90">
+              {event.type}
+            </Badge>
           </div>
-        </CardHeader>
+        </div>
 
-        <CardContent className="p-6">
+        <div className="p-6">
           <div className="space-y-4">
-            <CardTitle className="text-xl font-bold leading-tight">
-              {event.title}
-            </CardTitle>
+            <h3 className="text-xl font-bold leading-tight">{event.title}</h3>
 
             <p className="text-muted-foreground text-sm">
               {event.description}
@@ -145,29 +148,29 @@ const EventCard = ({ event }: EventCardProps) => {
               ))}
             </div>
           </div>
-        </CardContent>
 
-        <CardFooter className="p-6 pt-0">
-          {event.status === 'upcoming' && !isFull && (
-            <Button
-              onClick={() => setIsModalOpen(true)}
-              className="w-full btn-hero"
-            >
-              Je participe
-            </Button>
-          )}
-          {event.status === 'upcoming' && isFull && (
-            <Button disabled className="w-full">
-              Événement complet
-            </Button>
-          )}
-          {event.status === 'past' && (
-            <Button disabled variant="outline" className="w-full">
-              Événement terminé
-            </Button>
-          )}
-        </CardFooter>
-      </Card>
+          <div className="pt-4">
+            {event.status === 'upcoming' && !isFull && (
+              <Button
+                onClick={() => setIsModalOpen(true)}
+                className="w-full btn-hero button-3d"
+              >
+                Je participe
+              </Button>
+            )}
+            {event.status === 'upcoming' && isFull && (
+              <Button disabled className="w-full">
+                Événement complet
+              </Button>
+            )}
+            {event.status === 'past' && (
+              <Button disabled variant="outline" className="w-full">
+                Événement terminé
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
 
       {/* Registration Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

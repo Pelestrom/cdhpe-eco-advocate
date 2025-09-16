@@ -133,8 +133,7 @@ const Index = () => {
             <Link to="/evenement">
               <Button 
                 size="lg" 
-                variant="outline" 
-                className="border-white text-white hover:bg-white hover:text-primary font-semibold px-8 py-4"
+                className="btn-transparent font-semibold px-8 py-4"
               >
                 Nos événements
               </Button>

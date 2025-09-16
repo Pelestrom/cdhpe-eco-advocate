@@ -19,64 +19,47 @@ const NewsCard = ({ article, featured = false }: NewsCardProps) => {
   };
 
   return (
-    <Card className={`card-hover ${featured ? 'lg:col-span-2' : ''}`}>
-      <CardHeader className="p-0">
-        <div className="relative overflow-hidden rounded-t-lg">
+    <Link to={`/actualites/${article.slug}`} className="block group">
+      <div className="bg-card rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 card-3d">
+        <div className="aspect-video relative overflow-hidden">
           <img
             src={article.image}
             alt={article.title}
-            className={`w-full object-cover transition-transform duration-300 hover:scale-105 ${
-              featured ? 'h-64' : 'h-48'
-            }`}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
           <div className="absolute top-4 left-4">
-            <Badge variant="secondary" className="bg-background/90 text-foreground">
+            <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium animate-glow">
               {article.category}
-            </Badge>
+            </span>
           </div>
         </div>
-      </CardHeader>
-      
-      <CardContent className="p-6">
-        <div className="space-y-3">
-          <h3 className={`font-bold leading-tight hover:text-primary transition-colors ${
-            featured ? 'text-xl lg:text-2xl' : 'text-lg'
-          }`}>
-            <Link to={`/actualites/${article.slug}`}>
+        <div className="p-6">
+          <div className="space-y-3">
+            <h3 className="text-lg font-bold leading-tight hover:text-primary transition-colors">
               {article.title}
-            </Link>
-          </h3>
-          
-          <p className={`text-muted-foreground ${
-            featured ? 'text-base' : 'text-sm'
-          }`}>
-            {article.summary}
-          </p>
-        </div>
-      </CardContent>
-      
-      <CardFooter className="px-6 pb-6">
-        <div className="flex items-center justify-between w-full text-sm text-muted-foreground">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-1">
-              <Calendar className="h-4 w-4" />
-              <span>{formatDate(article.date)}</span>
-            </div>
-            <div className="flex items-center space-x-1">
-              <User className="h-4 w-4" />
-              <span>{article.author}</span>
+            </h3>
+            <p className="text-muted-foreground text-sm">
+              {article.summary}
+            </p>
+            <div className="flex items-center justify-between text-sm text-muted-foreground">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-1">
+                  <Calendar className="h-4 w-4" />
+                  <span>{formatDate(article.date)}</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <User className="h-4 w-4" />
+                  <span>{article.author}</span>
+                </div>
+              </div>
+              <span className="text-primary hover:text-primary-dark font-medium transition-colors">
+                Lire la suite →
+              </span>
             </div>
           </div>
-          
-          <Link
-            to={`/actualites/${article.slug}`}
-            className="text-primary hover:text-primary-dark font-medium transition-colors"
-          >
-            Lire la suite →
-          </Link>
         </div>
-      </CardFooter>
-    </Card>
+      </div>
+    </Link>
   );
 };
 

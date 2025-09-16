@@ -33,7 +33,7 @@ const Hero = () => {
               {/* Call to Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/nous-soutenir">
-                  <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold px-8 py-4 text-lg">
+                  <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold px-8 py-4 text-lg button-3d">
                     Rejoignez notre mission
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
@@ -41,8 +41,7 @@ const Hero = () => {
                 <Link to="/actualites">
                   <Button 
                     size="lg" 
-                    variant="outline" 
-                    className="border-white text-white hover:bg-white hover:text-primary font-semibold px-8 py-4 text-lg"
+                    className="btn-transparent font-semibold px-8 py-4 text-lg"
                   >
                     Découvrir nos actions
                   </Button>
@@ -68,9 +67,9 @@ const Hero = () => {
 
             {/* Right Content - Mission Cards */}
             <div className="space-y-6 animate-slide-up">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 card-3d">
                 <div className="flex items-center space-x-4 mb-4">
-                  <div className="p-3 bg-white/20 rounded-full">
+                  <div className="p-3 bg-white/20 rounded-full animate-3d-float">
                     <Shield className="h-6 w-6 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold text-white">Droits de l'Homme</h3>
@@ -81,9 +80,9 @@ const Hero = () => {
                 </p>
               </div>
 
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 card-3d">
                 <div className="flex items-center space-x-4 mb-4">
-                  <div className="p-3 bg-white/20 rounded-full">
+                  <div className="p-3 bg-white/20 rounded-full animate-3d-float" style={{animationDelay: '2s'}}>
                     <Leaf className="h-6 w-6 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold text-white">Protection Environnementale</h3>
@@ -94,9 +93,9 @@ const Hero = () => {
                 </p>
               </div>
 
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 card-3d">
                 <div className="flex items-center space-x-4 mb-4">
-                  <div className="p-3 bg-white/20 rounded-full">
+                  <div className="p-3 bg-white/20 rounded-full animate-3d-float" style={{animationDelay: '4s'}}>
                     <Heart className="h-6 w-6 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold text-white">Engagement Communautaire</h3>
