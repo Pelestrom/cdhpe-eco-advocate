@@ -1,6 +1,13 @@
-// API Client for CDHPE - Ready for future Supabase integration
+// Legacy API Client - Now using Supabase directly
+// This file is kept for backward compatibility
+// New code should use apiService from './apiService'
+
+import { apiService } from './apiService';
+import type { Publication, Event } from './supabaseClient';
+
+// Legacy interfaces for backward compatibility
 export interface NewsArticle {
-  id: number;
+  id: string;
   slug: string;
   title: string;
   summary: string;
@@ -12,26 +19,6 @@ export interface NewsArticle {
   featured: boolean;
 }
 
-export interface Event {
-  id: number;
-  title: string;
-  description: string;
-  date: string;
-  endDate: string;
-  time: string;
-  location: string;
-  type: string;
-  status: 'upcoming' | 'past';
-  maxParticipants: number;
-  currentParticipants: number;
-  image: string;
-  organizer: string;
-  isFree: boolean;
-  price: string | null;
-  registrationDeadline: string;
-  tags: string[];
-}
-
 export interface ContactForm {
   name: string;
   email: string;
@@ -39,74 +26,138 @@ export interface ContactForm {
   helpType: 'donation' | 'volunteer' | 'partnership' | 'other';
 }
 
-class ApiClient {
-  // News methods
+// Legacy API client for backward compatibility
+class LegacyApiClient {
+  // Convert Supabase Publication to legacy NewsArticle format
+  private convertPublicationToNewsArticle(publication: Publication): NewsArticle {
+    return {
+      id: publication.id,
+      slug: publication.slug,
+      title: publication.titre,
+      summary: publication.chapeau,
+      content: publication.contenu_long,
+      date: publication.date_publication,
+      image: publication.media?.url || '/api/placeholder/600/400',
+      category: publication.categories?.nom || 'Non catégorisé',
+      author: publication.teams?.nom || 'CDHPE',
+      featured: publication.featured
+    };
+  }
+
+  // Convert Supabase Event to legacy Event format
+  private convertSupabaseEventToLegacy(event: Event): any {
+    return {
+      id: event.id,
+      title: event.titre,
+      description: event.description_long,
+      date: event.date_debut,
+      endDate: event.date_fin || event.date_debut,
+      time: event.heure || '09:00',
+      location: event.lieu,
+      type: event.event_types?.nom || 'Événement',
+      status: event.statut === 'a_venir' ? 'upcoming' : 'past',
+      maxParticipants: event.max_participants,
+      currentParticipants: event.participants_count,
+      image: event.media?.url || '/api/placeholder/800/500',
+      organizer: 'CDHPE',
+      isFree: event.gratuit,
+      price: event.prix || null,
+      registrationDeadline: event.date_debut,
+      tags: event.keywords
+    };
+  }
+
   async getNews(): Promise<NewsArticle[]> {
-    // Currently loads from JSON, will be replaced with Supabase API
-    const response = await import('../data/news.json');
-    return response.default;
+    const publications = await apiService.getPublications();
+    return publications.map(p => this.convertPublicationToNewsArticle(p));
   }
 
   async getFeaturedNews(): Promise<NewsArticle[]> {
-    const news = await this.getNews();
-    return news.filter(article => article.featured);
+    const publications = await apiService.getFeaturedPublications();
+    return publications.map(p => this.convertPublicationToNewsArticle(p));
   }
 
   async getNewsBySlug(slug: string): Promise<NewsArticle | null> {
-    const news = await this.getNews();
-    return news.find(article => article.slug === slug) || null;
+    try {
+      const publication = await apiService.getPublicationBySlug(slug);
+      return this.convertPublicationToNewsArticle(publication);
+    } catch (error) {
+      return null;
+    }
   }
 
   async getNewsByCategory(category: string): Promise<NewsArticle[]> {
-    const news = await this.getNews();
-    return news.filter(article => article.category === category);
+    // This would need to be implemented in apiService if needed
+    const publications = await apiService.getPublications();
+    return publications
+      .filter(p => p.categories?.nom === category)
+      .map(p => this.convertPublicationToNewsArticle(p));
   }
 
-  // Events methods
-  async getEvents(): Promise<Event[]> {
-    // Currently loads from JSON, will be replaced with Supabase API
-    const response = await import('../data/events.json');
-    return response.default as Event[];
+  async getEvents(): Promise<any[]> {
+    const events = await apiService.getEvents();
+    return events.map(e => this.convertSupabaseEventToLegacy(e));
   }
 
-  async getUpcomingEvents(): Promise<Event[]> {
-    const events = await this.getEvents();
-    return events.filter(event => event.status === 'upcoming');
+  async getUpcomingEvents(): Promise<any[]> {
+    const events = await apiService.getEvents('a_venir');
+    return events.map(e => this.convertSupabaseEventToLegacy(e));
   }
 
-  async getPastEvents(): Promise<Event[]> {
-    const events = await this.getEvents();
-    return events.filter(event => event.status === 'past');
+  async getPastEvents(): Promise<any[]> {
+    const events = await apiService.getEvents('termine');
+    return events.map(e => this.convertSupabaseEventToLegacy(e));
   }
 
-  async getEventById(id: number): Promise<Event | null> {
-    const events = await this.getEvents();
-    return events.find(event => event.id === id) || null;
+  async getEventById(id: string): Promise<any | null> {
+    try {
+      const event = await apiService.getEventById(id);
+      return this.convertSupabaseEventToLegacy(event);
+    } catch (error) {
+      return null;
+    }
   }
 
-  // Contact form submission
   async submitContactForm(data: ContactForm): Promise<{ success: boolean; message: string }> {
-    // Currently simulates submission, will be replaced with Supabase API
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
-    
-    console.log('Contact form submitted:', data);
-    return {
-      success: true,
-      message: 'Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.'
-    };
+    try {
+      await apiService.submitContactForm({
+        nom: data.name,
+        email: data.email,
+        message: data.message,
+        origine: 'contact',
+        sujet: `Contact - ${data.helpType}`
+      });
+      
+      return {
+        success: true,
+        message: 'Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.'
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: 'Une erreur s\'est produite lors de l\'envoi du message.'
+      };
+    }
   }
 
-  // Event registration
-  async registerForEvent(eventId: number, participantData: { name: string; email: string; }): Promise<{ success: boolean; message: string }> {
-    // Currently simulates registration, will be replaced with Supabase API
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
-    
-    console.log('Event registration:', { eventId, participantData });
-    return {
-      success: true,
-      message: 'Votre inscription a été confirmée. Vous recevrez un email de confirmation.'
-    };
+  async registerForEvent(eventId: string, participantData: { name: string; email: string; }): Promise<{ success: boolean; message: string }> {
+    try {
+      await apiService.registerForEvent(eventId, {
+        nom: participantData.name,
+        email: participantData.email
+      });
+      
+      return {
+        success: true,
+        message: 'Votre inscription a été confirmée. Vous recevrez un email de confirmation.'
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: 'Une erreur s\'est produite lors de l\'inscription.'
+      };
+    }
   }
 }
 
-export const apiClient = new ApiClient();
+export const apiClient = new LegacyApiClient();

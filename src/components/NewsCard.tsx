@@ -2,7 +2,18 @@ import { Link } from 'react-router-dom';
 import { Calendar, User } from 'lucide-react';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { NewsArticle } from '@/services/apiClient';
+interface NewsArticle {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string;
+  content: string;
+  date: string;
+  image: string;
+  category: string;
+  author: string;
+  featured: boolean;
+}
 
 interface NewsCardProps {
   article: NewsArticle;

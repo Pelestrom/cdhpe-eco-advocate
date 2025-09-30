@@ -4,7 +4,7 @@ import { Calendar, User, ArrowLeft, Share2, Facebook, Twitter, Linkedin } from '
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { NewsArticle, apiClient } from '@/services/apiClient';
+import { apiClient, NewsArticle } from '@/services/apiClient';
 import { useToast } from '@/hooks/use-toast';
 
 const ArticleDetail = () => {

@@ -6,7 +6,27 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Event, apiClient } from '@/services/apiClient';
+import { apiClient } from '@/services/apiClient';
+
+interface Event {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  endDate: string;
+  time: string;
+  location: string;
+  type: string;
+  status: 'upcoming' | 'past';
+  maxParticipants: number;
+  currentParticipants: number;
+  image: string;
+  organizer: string;
+  isFree: boolean;
+  price: string | null;
+  registrationDeadline: string;
+  tags: string[];
+}
 import { useToast } from '@/hooks/use-toast';
 
 interface EventCardProps {

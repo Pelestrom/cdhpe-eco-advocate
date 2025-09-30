@@ -4,7 +4,7 @@ import NewsCard from '@/components/NewsCard';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { NewsArticle, apiClient } from '@/services/apiClient';
+import { apiClient, NewsArticle } from '@/services/apiClient';
 
 const Actualites = () => {
   const [news, setNews] = useState<NewsArticle[]>([]);

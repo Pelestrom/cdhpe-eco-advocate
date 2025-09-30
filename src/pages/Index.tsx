@@ -4,7 +4,7 @@ import NewsCard from '@/components/NewsCard';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Target, Users, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { NewsArticle, apiClient } from '@/services/apiClient';
+import { apiClient, NewsArticle } from '@/services/apiClient';
 
 const Index = () => {
   const [featuredNews, setFeaturedNews] = useState<NewsArticle[]>([]);
