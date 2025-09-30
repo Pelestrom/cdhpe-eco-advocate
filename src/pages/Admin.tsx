@@ -1,22 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Lock, 
-  FileText, 
-  Calendar, 
-  Users, 
-  Image, 
-  MessageSquare, 
-  Settings,
-  Activity,
-  Plus,
-  Edit,
-  Trash2,
-  Eye,
-  Upload,
-  Save,
-  X
-} from 'lucide-react';
+import { Lock, FileText, Calendar, Users, Image, MessageSquare, Settings, Activity, Plus, CreditCard as Edit, Trash2, Eye, Upload, Save, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
