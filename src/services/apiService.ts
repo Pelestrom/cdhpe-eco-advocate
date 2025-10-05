@@ -1,16 +1,18 @@
-import { supabase, supabaseAdmin } from './supabaseClient';
-import type { 
-  Publication, 
-  Event, 
-  Category, 
-  Team, 
-  EventType, 
-  Media, 
-  Participant, 
-  Message, 
+import { supabase } from '@/integrations/supabase/client';
+import type {
+  Publication,
+  Event,
+  Category,
+  Team,
+  EventType,
+  Media,
+  Participant,
+  Message,
   SupportInfo,
-  AdminLog 
+  AdminLog
 } from './supabaseClient';
+
+const supabaseAdmin = null;
 
 class ApiService {
   // Publications
