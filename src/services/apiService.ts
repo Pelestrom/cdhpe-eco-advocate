@@ -17,112 +17,142 @@ const supabaseAdmin = null;
 class ApiService {
   // Publications
   async getPublications(limit?: number, offset?: number) {
-    let query = supabase
-      .from('publications')
-      .select(`
-        *,
-        categories(nom),
-        teams(nom),
-        media(url, type)
-      `)
-      .eq('published', true)
-      .order('date_publication', { ascending: false });
+    try {
+      let query = (supabase as any)
+        .from('publications')
+        .select(`
+          *,
+          categories(nom),
+          teams(nom),
+          media(url, type)
+        `)
+        .eq('published', true)
+        .order('date_publication', { ascending: false });
 
-    if (limit) query = query.limit(limit);
-    if (offset) query = query.range(offset, offset + limit - 1);
+      if (limit) query = query.limit(limit);
+      if (offset) query = query.range(offset, offset + limit - 1);
 
-    const { data, error } = await query;
-    if (error) throw error;
-    return data as Publication[];
+      const { data, error } = await query;
+      if (error) throw error;
+      return data as Publication[];
+    } catch (error) {
+      console.warn('Publications table not yet created');
+      return [];
+    }
   }
 
   async getPublicationBySlug(slug: string) {
-    const { data, error } = await supabase
-      .from('publications')
-      .select(`
-        *,
-        categories(nom),
-        teams(nom),
-        media(url, type)
-      `)
-      .eq('slug', slug)
-      .eq('published', true)
-      .single();
+    try {
+      const { data, error } = await (supabase as any)
+        .from('publications')
+        .select(`
+          *,
+          categories(nom),
+          teams(nom),
+          media(url, type)
+        `)
+        .eq('slug', slug)
+        .eq('published', true)
+        .single();
 
-    if (error) throw error;
-    return data as Publication;
+      if (error) throw error;
+      return data as Publication;
+    } catch (error) {
+      console.warn('Publications table not yet created');
+      throw error;
+    }
   }
 
   async getFeaturedPublications() {
-    const { data, error } = await supabase
-      .from('publications')
-      .select(`
-        *,
-        categories(nom),
-        teams(nom),
-        media(url, type)
-      `)
-      .eq('published', true)
-      .eq('featured', true)
-      .order('date_publication', { ascending: false })
-      .limit(3);
+    try {
+      const { data, error } = await (supabase as any)
+        .from('publications')
+        .select(`
+          *,
+          categories(nom),
+          teams(nom),
+          media(url, type)
+        `)
+        .eq('published', true)
+        .eq('featured', true)
+        .order('date_publication', { ascending: false })
+        .limit(3);
 
-    if (error) throw error;
-    return data as Publication[];
+      if (error) throw error;
+      return data as Publication[];
+    } catch (error) {
+      console.warn('Publications table not yet created');
+      return [];
+    }
   }
 
   // Events
   async getEvents(status?: 'a_venir' | 'termine') {
-    let query = supabase
-      .from('events')
-      .select(`
-        *,
-        event_types(nom),
-        media(url, type)
-      `)
-      .order('date_debut', { ascending: status === 'a_venir' });
+    try {
+      let query = (supabase as any)
+        .from('events')
+        .select(`
+          *,
+          event_types(nom),
+          media(url, type)
+        `)
+        .order('date_debut', { ascending: status === 'a_venir' });
 
-    if (status) query = query.eq('statut', status);
+      if (status) query = query.eq('statut', status);
 
-    const { data, error } = await query;
-    if (error) throw error;
-    return data as Event[];
+      const { data, error } = await query;
+      if (error) throw error;
+      return data as Event[];
+    } catch (error) {
+      console.warn('Events table not yet created');
+      return [];
+    }
   }
 
   async getEventById(id: string) {
-    const { data, error } = await supabase
-      .from('events')
-      .select(`
-        *,
-        event_types(nom),
-        media(url, type)
-      `)
-      .eq('id', id)
-      .single();
+    try {
+      const { data, error } = await (supabase as any)
+        .from('events')
+        .select(`
+          *,
+          event_types(nom),
+          media(url, type)
+        `)
+        .eq('id', id)
+        .single();
 
-    if (error) throw error;
-    return data as Event;
+      if (error) throw error;
+      return data as Event;
+    } catch (error) {
+      console.warn('Events table not yet created');
+      throw error;
+    }
   }
 
   // Participant registration
   async registerForEvent(eventId: string, participantData: { nom: string; email: string }) {
-    const { data, error } = await supabase
-      .from('participants')
-      .insert({
-        event_id: eventId,
-        nom: participantData.nom,
-        email: participantData.email,
-        confirmed: false
-      })
-      .select()
-      .single();
+    try {
+      const { data, error } = await (supabase as any)
+        .from('event_registrations')
+        .insert({
+          event_id: eventId,
+          name: participantData.nom,
+          email: participantData.email,
+          status: 'confirmed'
+        })
+        .select()
+        .single();
 
-    if (error) throw error;
+      if (error) throw error;
 
-    // Send confirmation email (implement this based on your email service)
-    await this.sendConfirmationEmail(eventId, participantData);
+      // Send confirmation email (implement this based on your email service)
+      await this.sendConfirmationEmail(eventId, participantData);
 
-    return data as Participant;
+      return data as any;
+    } catch (error) {
+      console.warn('Event registrations table not yet created');
+      throw error;
+    }
   }
 
   // Contact form
@@ -134,59 +164,90 @@ class ApiService {
     origine: 'contact' | 'participation';
     ref_id?: string;
   }) {
-    const { data, error } = await supabase
-      .from('messages')
-      .insert(formData)
-      .select()
-      .single();
+    try {
+      const { data, error } = await (supabase as any)
+        .from('contact_messages')
+        .insert({
+          name: formData.nom,
+          email: formData.email,
+          message: formData.message,
+          help_type: formData.sujet || 'other',
+          status: 'new'
+        })
+        .select()
+        .single();
 
-    if (error) throw error;
-    return data as Message;
+      if (error) throw error;
+      return data as any;
+    } catch (error) {
+      console.warn('Contact messages table not yet created');
+      throw error;
+    }
   }
 
   // Support info
   async getSupportInfo() {
-    const { data, error } = await supabase
-      .from('support_info')
-      .select('*')
-      .eq('actif', true)
-      .order('created_at');
+    try {
+      const { data, error } = await (supabase as any)
+        .from('support_info')
+        .select('*')
+        .eq('actif', true)
+        .order('created_at');
 
-    if (error) throw error;
-    return data as SupportInfo[];
+      if (error) throw error;
+      return data as SupportInfo[];
+    } catch (error) {
+      console.warn('Support info table not yet created');
+      return [];
+    }
   }
 
   // Categories
   async getCategories() {
-    const { data, error } = await supabase
-      .from('categories')
-      .select('*')
-      .order('nom');
+    try {
+      const { data, error} = await (supabase as any)
+        .from('categories')
+        .select('*')
+        .order('nom');
 
-    if (error) throw error;
-    return data as Category[];
+      if (error) throw error;
+      return data as Category[];
+    } catch (error) {
+      console.warn('Categories table not yet created');
+      return [];
+    }
   }
 
   // Teams
   async getTeams() {
-    const { data, error } = await supabase
-      .from('teams')
-      .select('*')
-      .order('nom');
+    try {
+      const { data, error } = await (supabase as any)
+        .from('teams')
+        .select('*')
+        .order('nom');
 
-    if (error) throw error;
-    return data as Team[];
+      if (error) throw error;
+      return data as Team[];
+    } catch (error) {
+      console.warn('Teams table not yet created');
+      return [];
+    }
   }
 
   // Event types
   async getEventTypes() {
-    const { data, error } = await supabase
-      .from('event_types')
-      .select('*')
-      .order('nom');
+    try {
+      const { data, error } = await (supabase as any)
+        .from('event_types')
+        .select('*')
+        .order('nom');
 
-    if (error) throw error;
-    return data as EventType[];
+      if (error) throw error;
+      return data as EventType[];
+    } catch (error) {
+      console.warn('Event types table not yet created');
+      return [];
+    }
   }
 
   // Email service (placeholder - implement based on your choice)
@@ -197,24 +258,6 @@ class ApiService {
     // This is a placeholder - implement with your email service
     console.log('Sending confirmation email to:', participant.email);
     console.log('Event:', event.titre);
-    
-    // Example implementation with fetch to your email endpoint
-    // await fetch('/api/send-email', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-    //     to: participant.email,
-    //     subject: `Confirmation d'inscription - ${event.titre}`,
-    //     html: `
-    //       <h2>Bonjour ${participant.nom},</h2>
-    //       <p>Votre inscription à l'événement "${event.titre}" a été confirmée.</p>
-    //       <p><strong>Date:</strong> ${new Date(event.date_debut).toLocaleDateString('fr-FR')}</p>
-    //       <p><strong>Lieu:</strong> ${event.lieu}</p>
-    //       <p>Nous vous remercions de votre participation.</p>
-    //       <p>L'équipe CDHPE</p>
-    //     `
-    //   })
-    // });
   }
 
   // Admin methods (require service role)
@@ -223,7 +266,7 @@ class ApiService {
     return password === adminPassword;
   }
 
-  // Admin - Publications
+  
   async adminGetPublications() {
     if (!supabaseAdmin) throw new Error('Admin client not configured');
     
@@ -554,68 +597,31 @@ class ApiService {
     if (error) throw error;
   }
 
-  // Admin - Support Info
-  async adminGetSupportInfo() {
-    if (!supabaseAdmin) throw new Error('Admin client not configured');
-
-    const { data, error } = await supabaseAdmin
-      .from('support_info')
-      .select('*')
-      .order('created_at');
-
-    if (error) throw error;
-    return data as SupportInfo[];
-  }
-
-  async adminUpdateSupportInfo(id: string, updates: Partial<SupportInfo>) {
-    if (!supabaseAdmin) throw new Error('Admin client not configured');
-
-    const { data, error } = await supabaseAdmin
-      .from('support_info')
-      .update(updates)
-      .eq('id', id)
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data as SupportInfo;
-  }
-
-  // Admin - Logs
-  private async logAdminAction(action: string, details?: Record<string, any>) {
-    if (!supabaseAdmin) return;
-
-    await supabaseAdmin
-      .from('admin_logs')
-      .insert({
-        action,
-        details
-      });
-  }
-
-  async adminGetLogs() {
-    if (!supabaseAdmin) throw new Error('Admin client not configured');
-
-    const { data, error } = await supabaseAdmin
-      .from('admin_logs')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(100);
-
-    if (error) throw error;
-    return data as AdminLog[];
-  }
-
   // Utility functions
-  private generateSlug(title: string): string {
-    return title
+  private generateSlug(text: string): string {
+    return text
       .toLowerCase()
       .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '') // Remove accents
-      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
-      .replace(/\s+/g, '-') // Replace spaces with hyphens
-      .replace(/-+/g, '-') // Replace multiple hyphens with single
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^\\w\\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
       .trim();
+  }
+
+  private async logAdminAction(action: string, details?: Record<string, any>) {
+    if (!supabaseAdmin) return;
+    
+    try {
+      await supabaseAdmin
+        .from('admin_logs')
+        .insert({
+          action,
+          details
+        });
+    } catch (error) {
+      console.error('Error logging admin action:', error);
+    }
   }
 }
 

@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Target, Users, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { apiClient, NewsArticle } from '@/services/apiClient';
+import newsSectionBg from '@/assets/news-section-bg.jpg';
+import justiceBg from '@/assets/justice-solidarity-bg.jpg';
 
 const Index = () => {
   const [featuredNews, setFeaturedNews] = useState<NewsArticle[]>([]);
@@ -80,8 +82,17 @@ const Index = () => {
       </section>
 
       {/* Latest News Section */}
-      <section className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section 
+        className="py-20 relative"
+        style={{
+          backgroundImage: `url(${newsSectionBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}
+      >
+        <div className="absolute inset-0 bg-background/95"></div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center justify-between mb-12">
             <h2 className="text-3xl md:text-4xl font-bold">
               Dernières <span className="gradient-text">Actualités</span>
@@ -115,27 +126,38 @@ const Index = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-20 hero-gradient">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+      <section 
+        className="py-20 relative text-white"
+        style={{
+          backgroundImage: `url(${justiceBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/90"></div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Rejoignez notre combat pour la justice
           </h2>
-          <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg mb-8 max-w-2xl mx-auto">
             Ensemble, nous pouvons créer un monde plus juste où les droits de l'homme 
             sont respectés et l'environnement protégé.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/nous-soutenir">
-              <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold px-8 py-4">
-                Nous soutenir
+              <Button size="lg" variant="secondary" className="btn-hero button-3d">
+                Agir avec nous
               </Button>
             </Link>
             <Link to="/evenement">
-              <Button 
-                size="lg" 
-                className="btn-transparent font-semibold px-8 py-4"
-              >
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
                 Nos événements
+              </Button>
+            </Link>
+            <Link to="/nous-soutenir#contact">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+                Contact
               </Button>
             </Link>
           </div>

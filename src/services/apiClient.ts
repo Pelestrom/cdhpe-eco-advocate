@@ -5,6 +5,9 @@
 import { apiService } from './apiService';
 import type { Publication, Event } from './supabaseClient';
 
+// Re-export types for backward compatibility
+export type { Publication, Event };
+
 // Legacy interfaces for backward compatibility
 export interface NewsArticle {
   id: string;
