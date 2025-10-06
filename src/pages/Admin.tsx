@@ -53,20 +53,11 @@ const Admin = () => {
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
 
   // Form states
-  const [publicationForm, setPublicationForm] = useState<{
-    titre: string;
-    chapeau: string;
-    contenu_long: string;
-    type_media_principal: 'texte' | 'image' | 'video' | 'audio';
-    categorie_id: string;
-    equipe_id: string;
-    featured: boolean;
-    published: boolean;
-  }>({
+  const [publicationForm, setPublicationForm] = useState({
     titre: '',
     chapeau: '',
     contenu_long: '',
-    type_media_principal: 'texte',
+    type_media_principal: 'texte' as const,
     categorie_id: '',
     equipe_id: '',
     featured: false,
@@ -141,8 +132,8 @@ const Admin = () => {
         apiService.adminGetMedia(),
         apiService.adminGetParticipants(),
         apiService.adminGetMessages(),
-        apiService.getSupportInfo(),
-        [] // Logs placeholder
+        apiService.adminGetSupportInfo(),
+        apiService.adminGetLogs()
       ]);
 
       setPublications(publicationsData);

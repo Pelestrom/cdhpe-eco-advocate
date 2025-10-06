@@ -4,32 +4,11 @@ import EventCard from '@/components/EventCard';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { apiClient } from '@/services/apiClient';
-
-// Local Event interface for legacy data
-interface EventLegacy {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  endDate: string;
-  time: string;
-  location: string;
-  type: string;
-  status: 'upcoming' | 'past';
-  maxParticipants: number;
-  currentParticipants: number;
-  image: string;
-  organizer: string;
-  isFree: boolean;
-  price: string | null; // Made required to match EventCard
-  registrationDeadline: string;
-  tags: string[];
-}
+import { Event, apiClient } from '@/services/apiClient';
 
 const Evenement = () => {
-  const [upcomingEvents, setUpcomingEvents] = useState<EventLegacy[]>([]);
-  const [pastEvents, setPastEvents] = useState<EventLegacy[]>([]);
+  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
+  const [pastEvents, setPastEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('upcoming');
   const [typeFilter, setTypeFilter] = useState('all');
@@ -53,7 +32,7 @@ const Evenement = () => {
     loadEvents();
   }, []);
 
-  const getFilteredEvents = (events: EventLegacy[]) => {
+  const getFilteredEvents = (events: Event[]) => {
     if (typeFilter === 'all') return events;
     return events.filter(event => event.type === typeFilter);
   };

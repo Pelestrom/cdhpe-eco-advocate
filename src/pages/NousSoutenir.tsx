@@ -138,7 +138,7 @@ const NousSoutenir = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12" id="contact">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Form */}
           <div>
             <h2 className="text-2xl font-bold mb-6">Contactez-nous</h2>
@@ -179,7 +179,7 @@ const NousSoutenir = () => {
                     <Label htmlFor="helpType">Type d'aide *</Label>
                     <Select
                       value={formData.helpType}
-                      onValueChange={(value) => handleInputChange('helpType', value as ContactForm['helpType'])}
+                      onValueChange={(value: any) => handleInputChange('helpType', value)}
                     >
                       <SelectTrigger className="focus-ring">
                         <SelectValue />
