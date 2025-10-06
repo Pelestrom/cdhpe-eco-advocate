@@ -20,17 +20,17 @@ All colors MUST be HSL for semantic tokens.
     --popover: 0 0% 100%;
     --popover-foreground: 210 20% 15%;
 
-    /* Primary - CDHPE Blue (from logo) */
-    --primary: 190 65% 45%;
+    /* Primary - CDHPE Blue (simplified) */
+    --primary: 205 70% 35%;
     --primary-foreground: 0 0% 100%;
-    --primary-light: 190 65% 65%;
-    --primary-dark: 190 65% 35%;
+    --primary-light: 205 60% 50%;
+    --primary-dark: 205 80% 25%;
 
-    /* Secondary - CDHPE Green (from logo) */
-    --secondary: 120 60% 50%;
+    /* Secondary - CDHPE Green (simplified) */
+    --secondary: 155 45% 40%;
     --secondary-foreground: 0 0% 100%;
-    --secondary-light: 120 60% 70%;
-    --secondary-dark: 120 60% 40%;
+    --secondary-light: 155 40% 55%;
+    --secondary-dark: 155 50% 30%;
 
     /* Neutral system */
     --muted: 210 15% 96%;
@@ -54,10 +54,10 @@ All colors MUST be HSL for semantic tokens.
     /* Design tokens */
     --radius: 0.75rem;
 
-    /* CDHPE specific gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
-    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(165 55% 45%) 50%, hsl(var(--secondary)) 100%);
-    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
+    /* CDHPE specific solid backgrounds - simplified */
+    --gradient-primary: hsl(var(--primary));
+    --gradient-hero: linear-gradient(135deg, hsl(205 70% 30%) 0%, hsl(155 45% 35%) 100%);
+    --gradient-subtle: hsl(var(--background));
 
   /* Shadows - use your primary color with transparency */
   --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);
@@ -168,11 +168,11 @@ body {
 @layer components {
   /* CDHPE Component Styles */
   .gradient-text {
-    @apply bg-gradient-to-r from-primary via-primary-light to-secondary bg-clip-text text-transparent;
+    @apply text-primary;
   }
 
   .gradient-bg {
-    background: var(--gradient-primary);
+    @apply bg-primary;
   }
 
   .hero-gradient {
@@ -180,7 +180,7 @@ body {
   }
 
   .subtle-gradient {
-    background: var(--gradient-subtle);
+    @apply bg-background;
   }
 
   .shadow-primary {
@@ -205,7 +205,7 @@ body {
 
   /* Custom button styles */
   .btn-hero {
-    @apply bg-gradient-to-r from-primary to-secondary text-white font-semibold py-3 px-6 rounded-xl shadow-primary hover:shadow-secondary transition-all duration-300 hover:scale-105;
+    @apply bg-primary text-white font-semibold py-3 px-6 rounded-xl shadow-primary hover:bg-primary-dark transition-all duration-300;
   }
 
   .btn-outline-hero {

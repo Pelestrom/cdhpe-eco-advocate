@@ -43,35 +43,35 @@ const Index = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/10">
+            <div className="text-center p-8 rounded-2xl bg-card border border-border hover:shadow-lg transition-shadow">
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Target className="w-8 h-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-4">Notre Vision</h3>
               <p className="text-muted-foreground">
-                Une société où les droits humains sont respectés et l'environnement protégé 
+                Une société où les droits humains sont respectés et l'environnement protégé
                 pour assurer un développement durable et équitable.
               </p>
             </div>
 
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-secondary/5 to-primary/5 border border-secondary/10">
+            <div className="text-center p-8 rounded-2xl bg-card border border-border hover:shadow-lg transition-shadow">
               <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Users className="w-8 h-8 text-secondary" />
               </div>
               <h3 className="text-xl font-semibold mb-4">Nos Valeurs</h3>
               <p className="text-muted-foreground">
-                Justice, transparence, solidarité et respect de la dignité humaine guident 
+                Justice, transparence, solidarité et respect de la dignité humaine guident
                 toutes nos actions et décisions.
               </p>
             </div>
 
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-primary/5 to-secondary/5 border border-primary/10">
-              <div className="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="text-center p-8 rounded-2xl bg-card border border-border hover:shadow-lg transition-shadow">
+              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6">
                 <Award className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-4">Notre Impact</h3>
               <p className="text-muted-foreground">
-                Plus de 500 personnes accompagnées, 25 formations dispensées et de nombreuses 
+                Plus de 500 personnes accompagnées, 25 formations dispensées et de nombreuses
                 victoires juridiques pour la protection des droits.
               </p>
             </div>
