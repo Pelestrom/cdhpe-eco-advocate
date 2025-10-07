@@ -11,7 +11,7 @@ const Header = () => {
     { name: 'Accueil', href: '/' },
     { name: 'Actualités', href: '/actualites' },
     { name: 'Évènements', href: '/evenement' },
-    { name: 'Nous soutenir', href: '/nous-soutenir' },
+    { name: 'Contact', href: '/nous-soutenir#contact' },
   ];
 
   const isActive = (href: string) => {
