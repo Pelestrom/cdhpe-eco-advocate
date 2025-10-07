@@ -17,112 +17,142 @@ const supabaseAdmin = null;
 class ApiService {
   // Publications
   async getPublications(limit?: number, offset?: number) {
-    let query = supabase
-      .from('publications')
-      .select(`
-        *,
-        categories(nom),
-        teams(nom),
-        media(url, type)
-      `)
-      .eq('published', true)
-      .order('date_publication', { ascending: false });
+    try {
+      let query = (supabase as any)
+        .from('publications')
+        .select(`
+          *,
+          categories(nom),
+          teams(nom),
+          media(url, type)
+        `)
+        .eq('published', true)
+        .order('date_publication', { ascending: false });
 
-    if (limit) query = query.limit(limit);
-    if (offset) query = query.range(offset, offset + limit - 1);
+      if (limit) query = query.limit(limit);
+      if (offset) query = query.range(offset, offset + limit - 1);
 
-    const { data, error } = await query;
-    if (error) throw error;
-    return data as Publication[];
+      const { data, error } = await query;
+      if (error) throw error;
+      return data as Publication[];
+    } catch (error) {
+      console.error('Error fetching publications:', error);
+      return [];
+    }
   }
 
   async getPublicationBySlug(slug: string) {
-    const { data, error } = await supabase
-      .from('publications')
-      .select(`
-        *,
-        categories(nom),
-        teams(nom),
-        media(url, type)
-      `)
-      .eq('slug', slug)
-      .eq('published', true)
-      .single();
+    try {
+      const { data, error } = await (supabase as any)
+        .from('publications')
+        .select(`
+          *,
+          categories(nom),
+          teams(nom),
+          media(url, type)
+        `)
+        .eq('slug', slug)
+        .eq('published', true)
+        .single();
 
-    if (error) throw error;
-    return data as Publication;
+      if (error) throw error;
+      return data as Publication;
+    } catch (error) {
+      console.error('Error fetching publication:', error);
+      throw error;
+    }
   }
 
   async getFeaturedPublications() {
-    const { data, error } = await supabase
-      .from('publications')
-      .select(`
-        *,
-        categories(nom),
-        teams(nom),
-        media(url, type)
-      `)
-      .eq('published', true)
-      .eq('featured', true)
-      .order('date_publication', { ascending: false })
-      .limit(3);
+    try {
+      const { data, error } = await (supabase as any)
+        .from('publications')
+        .select(`
+          *,
+          categories(nom),
+          teams(nom),
+          media(url, type)
+        `)
+        .eq('published', true)
+        .eq('featured', true)
+        .order('date_publication', { ascending: false })
+        .limit(3);
 
-    if (error) throw error;
-    return data as Publication[];
+      if (error) throw error;
+      return data as Publication[];
+    } catch (error) {
+      console.error('Error fetching featured publications:', error);
+      return [];
+    }
   }
 
   // Events
   async getEvents(status?: 'a_venir' | 'termine') {
-    let query = supabase
-      .from('events')
-      .select(`
-        *,
-        event_types(nom),
-        media(url, type)
-      `)
-      .order('date_debut', { ascending: status === 'a_venir' });
+    try {
+      let query = (supabase as any)
+        .from('events')
+        .select(`
+          *,
+          event_types(nom),
+          media(url, type)
+        `)
+        .order('date_debut', { ascending: status === 'a_venir' });
 
-    if (status) query = query.eq('statut', status);
+      if (status) query = query.eq('statut', status);
 
-    const { data, error } = await query;
-    if (error) throw error;
-    return data as Event[];
+      const { data, error } = await query;
+      if (error) throw error;
+      return data as Event[];
+    } catch (error) {
+      console.error('Error fetching events:', error);
+      return [];
+    }
   }
 
   async getEventById(id: string) {
-    const { data, error } = await supabase
-      .from('events')
-      .select(`
-        *,
-        event_types(nom),
-        media(url, type)
-      `)
-      .eq('id', id)
-      .single();
+    try {
+      const { data, error } = await (supabase as any)
+        .from('events')
+        .select(`
+          *,
+          event_types(nom),
+          media(url, type)
+        `)
+        .eq('id', id)
+        .single();
 
-    if (error) throw error;
-    return data as Event;
+      if (error) throw error;
+      return data as Event;
+    } catch (error) {
+      console.error('Error fetching event:', error);
+      throw error;
+    }
   }
 
   // Participant registration
   async registerForEvent(eventId: string, participantData: { nom: string; email: string }) {
-    const { data, error } = await supabase
-      .from('participants')
-      .insert({
-        event_id: eventId,
-        nom: participantData.nom,
-        email: participantData.email,
-        confirmed: false
-      })
-      .select()
-      .single();
+    try {
+      const { data, error } = await (supabase as any)
+        .from('event_registrations')
+        .insert({
+          event_id: eventId,
+          name: participantData.nom,
+          email: participantData.email,
+          status: 'confirmed'
+        })
+        .select()
+        .single();
 
-    if (error) throw error;
+      if (error) throw error;
 
-    // Send confirmation email (implement this based on your email service)
-    await this.sendConfirmationEmail(eventId, participantData);
+      // Send confirmation email (implement this based on your email service)
+      await this.sendConfirmationEmail(eventId, participantData);
 
-    return data as Participant;
+      return data as Participant;
+    } catch (error) {
+      console.error('Error registering for event:', error);
+      throw error;
+    }
   }
 
   // Contact form
@@ -134,59 +164,89 @@ class ApiService {
     origine: 'contact' | 'participation';
     ref_id?: string;
   }) {
-    const { data, error } = await supabase
-      .from('messages')
-      .insert(formData)
-      .select()
-      .single();
+    try {
+      const { data, error } = await (supabase as any)
+        .from('contact_messages')
+        .insert({
+          name: formData.nom,
+          email: formData.email,
+          message: formData.message,
+          help_type: formData.origine
+        })
+        .select()
+        .single();
 
-    if (error) throw error;
-    return data as Message;
+      if (error) throw error;
+      return data as Message;
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      throw error;
+    }
   }
 
   // Support info
   async getSupportInfo() {
-    const { data, error } = await supabase
-      .from('support_info')
-      .select('*')
-      .eq('actif', true)
-      .order('created_at');
+    try {
+      const { data, error } = await (supabase as any)
+        .from('support_info')
+        .select('*')
+        .eq('actif', true)
+        .order('created_at');
 
-    if (error) throw error;
-    return data as SupportInfo[];
+      if (error) throw error;
+      return data as SupportInfo[];
+    } catch (error) {
+      console.error('Error fetching support info:', error);
+      return [];
+    }
   }
 
   // Categories
   async getCategories() {
-    const { data, error } = await supabase
-      .from('categories')
-      .select('*')
-      .order('nom');
+    try {
+      const { data, error } = await (supabase as any)
+        .from('categories')
+        .select('*')
+        .order('nom');
 
-    if (error) throw error;
-    return data as Category[];
+      if (error) throw error;
+      return data as Category[];
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      return [];
+    }
   }
 
   // Teams
   async getTeams() {
-    const { data, error } = await supabase
-      .from('teams')
-      .select('*')
-      .order('nom');
+    try {
+      const { data, error } = await (supabase as any)
+        .from('teams')
+        .select('*')
+        .order('nom');
 
-    if (error) throw error;
-    return data as Team[];
+      if (error) throw error;
+      return data as Team[];
+    } catch (error) {
+      console.error('Error fetching teams:', error);
+      return [];
+    }
   }
 
   // Event types
   async getEventTypes() {
-    const { data, error } = await supabase
-      .from('event_types')
-      .select('*')
-      .order('nom');
+    try {
+      const { data, error } = await (supabase as any)
+        .from('event_types')
+        .select('*')
+        .order('nom');
 
-    if (error) throw error;
-    return data as EventType[];
+      if (error) throw error;
+      return data as EventType[];
+    } catch (error) {
+      console.error('Error fetching event types:', error);
+      return [];
+    }
   }
 
   // Email service (placeholder - implement based on your choice)

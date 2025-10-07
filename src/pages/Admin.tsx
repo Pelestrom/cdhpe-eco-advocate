@@ -53,11 +53,20 @@ const Admin = () => {
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
 
   // Form states
-  const [publicationForm, setPublicationForm] = useState({
+  const [publicationForm, setPublicationForm] = useState<{
+    titre: string;
+    chapeau: string;
+    contenu_long: string;
+    type_media_principal: 'texte' | 'image' | 'video' | 'audio';
+    categorie_id: string;
+    equipe_id: string;
+    featured: boolean;
+    published: boolean;
+  }>({
     titre: '',
     chapeau: '',
     contenu_long: '',
-    type_media_principal: 'texte' as const,
+    type_media_principal: 'texte',
     categorie_id: '',
     equipe_id: '',
     featured: false,
@@ -294,7 +303,7 @@ const Admin = () => {
       titre: publication.titre,
       chapeau: publication.chapeau,
       contenu_long: publication.contenu_long,
-      type_media_principal: publication.type_media_principal,
+      type_media_principal: publication.type_media_principal as 'texte' | 'image' | 'video' | 'audio',
       categorie_id: publication.categorie_id || '',
       equipe_id: publication.equipe_id || '',
       featured: publication.featured,

@@ -3,7 +3,29 @@
 // New code should use apiService from './apiService'
 
 import { apiService } from './apiService';
-import type { Publication, Event } from './supabaseClient';
+import type { Publication, Event as SupabaseEvent } from './supabaseClient';
+
+// Export Event type for backward compatibility
+export interface Event {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  endDate: string;
+  time: string;
+  location: string;
+  type: string;
+  image: string;
+  imageUrl?: string;
+  maxParticipants: number;
+  currentParticipants: number;
+  organizer: string;
+  price: string | null;
+  isFree: boolean;
+  status: 'upcoming' | 'past';
+  tags: string[];
+  registrationDeadline: string;
+}
 
 // Legacy interfaces for backward compatibility
 export interface NewsArticle {
@@ -45,7 +67,8 @@ class LegacyApiClient {
   }
 
   // Convert Supabase Event to legacy Event format
-  private convertSupabaseEventToLegacy(event: Event): any {
+  private convertSupabaseEventToLegacy(event: SupabaseEvent): Event {
+    const imageUrl = event.media?.url || '/api/placeholder/800/500';
     return {
       id: event.id,
       title: event.titre,
@@ -56,14 +79,15 @@ class LegacyApiClient {
       location: event.lieu,
       type: event.event_types?.nom || 'Événement',
       status: event.statut === 'a_venir' ? 'upcoming' : 'past',
-      maxParticipants: event.max_participants,
-      currentParticipants: event.participants_count,
-      image: event.media?.url || '/api/placeholder/800/500',
+      maxParticipants: event.max_participants || 100,
+      currentParticipants: event.participants_count || 0,
+      image: imageUrl,
+      imageUrl: imageUrl,
       organizer: 'CDHPE',
       isFree: event.gratuit,
       price: event.prix || null,
       registrationDeadline: event.date_debut,
-      tags: event.keywords
+      tags: event.keywords || []
     };
   }
 
@@ -94,22 +118,22 @@ class LegacyApiClient {
       .map(p => this.convertPublicationToNewsArticle(p));
   }
 
-  async getEvents(): Promise<any[]> {
+  async getEvents(): Promise<Event[]> {
     const events = await apiService.getEvents();
     return events.map(e => this.convertSupabaseEventToLegacy(e));
   }
 
-  async getUpcomingEvents(): Promise<any[]> {
+  async getUpcomingEvents(): Promise<Event[]> {
     const events = await apiService.getEvents('a_venir');
     return events.map(e => this.convertSupabaseEventToLegacy(e));
   }
 
-  async getPastEvents(): Promise<any[]> {
+  async getPastEvents(): Promise<Event[]> {
     const events = await apiService.getEvents('termine');
     return events.map(e => this.convertSupabaseEventToLegacy(e));
   }
 
-  async getEventById(id: string): Promise<any | null> {
+  async getEventById(id: string): Promise<Event | null> {
     try {
       const event = await apiService.getEventById(id);
       return this.convertSupabaseEventToLegacy(event);

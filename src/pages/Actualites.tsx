@@ -65,18 +65,32 @@ const Actualites = () => {
   };
 
   return (
-    <div className="min-h-screen py-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="gradient-text">Actualités</span>
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Découvrez nos dernières actions, analyses et prises de position en faveur 
-            des droits de l'homme et de la protection de l'environnement.
-          </p>
+    <div className="min-h-screen">
+      {/* Hero Section with Background */}
+      <section 
+        className="relative py-20 bg-gradient-to-br from-secondary/90 to-primary/90"
+        style={{
+          backgroundImage: `url(${import.meta.url.replace(/\/[^/]*$/, '')}/src/assets/news-section-bg.jpg)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-secondary/90 to-primary/90" />
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+              Actualités
+            </h1>
+            <p className="text-lg text-white/90 max-w-2xl mx-auto">
+              Découvrez nos dernières actions, analyses et prises de position en faveur 
+              des droits de l'homme et de la protection de l'environnement.
+            </p>
+          </div>
         </div>
+      </section>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         {/* Filters */}
         <div className="flex flex-col md:flex-row gap-4 mb-12">
