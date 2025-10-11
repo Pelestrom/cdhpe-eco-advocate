@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { apiClient, NewsArticle } from '@/services/apiClient';
 
+import newsBg from '@/assets/news-section-bg.jpg';
+
 const Actualites = () => {
   const [news, setNews] = useState<NewsArticle[]>([]);
   const [filteredNews, setFilteredNews] = useState<NewsArticle[]>([]);
@@ -68,9 +70,9 @@ const Actualites = () => {
     <div className="min-h-screen">
       {/* Hero Section with Background */}
       <section 
-        className="relative py-20 bg-gradient-to-br from-secondary/90 to-primary/90"
+        className="relative py-20"
         style={{
-          backgroundImage: `url(${import.meta.url.replace(/\/[^/]*$/, '')}/src/assets/news-section-bg.jpg)`,
+          backgroundImage: `url(${newsBg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundAttachment: 'fixed'

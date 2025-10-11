@@ -9,6 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { apiClient, ContactForm } from '@/services/apiClient';
 import { useToast } from '@/hooks/use-toast';
 
+import contactBg from '@/assets/contact-bg.jpg';
+
 const NousSoutenir = () => {
   const [formData, setFormData] = useState<ContactForm>({
     name: '',
@@ -98,18 +100,32 @@ const NousSoutenir = () => {
   ];
 
   return (
-    <div className="min-h-screen py-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="gradient-text">Nous Soutenir</span>
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Ensemble, nous pouvons créer un monde plus juste où les droits de l'homme sont respectés 
-            et l'environnement protégé. Découvrez comment vous pouvez contribuer à notre mission.
-          </p>
+    <div className="min-h-screen">
+      {/* Hero Section with Background */}
+      <section 
+        className="relative py-20"
+        style={{
+          backgroundImage: `url(${contactBg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/90 to-secondary/90" />
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+              Nous Soutenir
+            </h1>
+            <p className="text-lg text-white/90 max-w-3xl mx-auto">
+              Ensemble, nous pouvons créer un monde plus juste où les droits de l'homme sont respectés 
+              et l'environnement protégé. Découvrez comment vous pouvez contribuer à notre mission.
+            </p>
+          </div>
         </div>
+      </section>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         {/* Support Options */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
@@ -139,8 +155,8 @@ const NousSoutenir = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Form */}
-          <div>
+        {/* Contact Form */}
+          <div id="contact">
             <h2 className="text-2xl font-bold mb-6">Contactez-nous</h2>
             <Card>
               <CardHeader>
