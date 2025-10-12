@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Heart, Users, Handshake, Mail, Phone, Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { apiClient, ContactForm } from '@/services/apiClient';
 import { useToast } from '@/hooks/use-toast';
+import { useLocation } from 'react-router-dom';
 
 import contactBg from '@/assets/contact-bg.jpg';
 
@@ -20,6 +21,19 @@ const NousSoutenir = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const location = useLocation();
+
+  // Smooth scroll to contact section when hash is #contact
+  useEffect(() => {
+    if (location.hash === '#contact') {
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        setTimeout(() => {
+          contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    }
+  }, [location]);
 
   const handleInputChange = (field: keyof ContactForm, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));

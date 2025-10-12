@@ -51,43 +51,43 @@ export interface ContactForm {
 // Legacy API client for backward compatibility
 class LegacyApiClient {
   // Convert Supabase Publication to legacy NewsArticle format
-  private convertPublicationToNewsArticle(publication: Publication): NewsArticle {
+  private convertPublicationToNewsArticle(publication: any): NewsArticle {
     return {
       id: publication.id,
       slug: publication.slug,
-      title: publication.titre,
-      summary: publication.chapeau,
-      content: publication.contenu_long,
-      date: publication.date_publication,
-      image: publication.media?.url || '/api/placeholder/600/400',
-      category: publication.categories?.nom || 'Non catégorisé',
-      author: publication.teams?.nom || 'CDHPE',
+      title: publication.title || publication.titre,
+      summary: publication.summary || publication.chapeau,
+      content: publication.content || publication.contenu_long,
+      date: publication.created_at || publication.date_publication,
+      image: publication.image_url || publication.media?.url || '/api/placeholder/600/400',
+      category: publication.category || publication.categories?.nom || 'Non catégorisé',
+      author: publication.author || publication.teams?.nom || 'CDHPE',
       featured: publication.featured
     };
   }
 
   // Convert Supabase Event to legacy Event format
-  private convertSupabaseEventToLegacy(event: SupabaseEvent): Event {
-    const imageUrl = event.media?.url || '/api/placeholder/800/500';
+  private convertSupabaseEventToLegacy(event: any): Event {
+    const imageUrl = event.image_url || event.media?.url || '/api/placeholder/800/500';
     return {
       id: event.id,
-      title: event.titre,
-      description: event.description_long,
-      date: event.date_debut,
-      endDate: event.date_fin || event.date_debut,
-      time: event.heure || '09:00',
-      location: event.lieu,
-      type: event.event_types?.nom || 'Événement',
-      status: event.statut === 'a_venir' ? 'upcoming' : 'past',
+      title: event.title || event.titre,
+      description: event.description || event.description_long,
+      date: event.date || event.date_debut,
+      endDate: event.end_date || event.date_fin || event.date || event.date_debut,
+      time: event.time || event.heure || '09:00',
+      location: event.location || event.lieu,
+      type: event.type || event.event_types?.nom || 'Événement',
+      status: (event.status === 'upcoming' || event.statut === 'a_venir') ? 'upcoming' : 'past',
       maxParticipants: event.max_participants || 100,
-      currentParticipants: event.participants_count || 0,
+      currentParticipants: event.current_participants || event.participants_count || 0,
       image: imageUrl,
       imageUrl: imageUrl,
-      organizer: 'CDHPE',
-      isFree: event.gratuit,
-      price: event.prix || null,
-      registrationDeadline: event.date_debut,
-      tags: event.keywords || []
+      organizer: event.organizer || 'CDHPE',
+      isFree: event.is_free !== undefined ? event.is_free : event.gratuit,
+      price: event.price || event.prix || null,
+      registrationDeadline: event.registration_deadline || event.date || event.date_debut,
+      tags: event.tags || event.keywords || []
     };
   }
 
@@ -114,7 +114,7 @@ class LegacyApiClient {
     // This would need to be implemented in apiService if needed
     const publications = await apiService.getPublications();
     return publications
-      .filter(p => p.categories?.nom === category)
+      .filter((p: any) => (p.category || p.categories?.nom) === category)
       .map(p => this.convertPublicationToNewsArticle(p));
   }
 
@@ -124,12 +124,12 @@ class LegacyApiClient {
   }
 
   async getUpcomingEvents(): Promise<Event[]> {
-    const events = await apiService.getEvents('a_venir');
+    const events = await apiService.getEvents('upcoming');
     return events.map(e => this.convertSupabaseEventToLegacy(e));
   }
 
   async getPastEvents(): Promise<Event[]> {
-    const events = await apiService.getEvents('termine');
+    const events = await apiService.getEvents('past');
     return events.map(e => this.convertSupabaseEventToLegacy(e));
   }
 

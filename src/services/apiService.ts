@@ -20,14 +20,9 @@ class ApiService {
     try {
       let query = (supabase as any)
         .from('publications')
-        .select(`
-          *,
-          categories(nom),
-          teams(nom),
-          media(url, type)
-        `)
+        .select('*')
         .eq('published', true)
-        .order('date_publication', { ascending: false });
+        .order('created_at', { ascending: false });
 
       if (limit) query = query.limit(limit);
       if (offset) query = query.range(offset, offset + limit - 1);
@@ -45,12 +40,7 @@ class ApiService {
     try {
       const { data, error } = await (supabase as any)
         .from('publications')
-        .select(`
-          *,
-          categories(nom),
-          teams(nom),
-          media(url, type)
-        `)
+        .select('*')
         .eq('slug', slug)
         .eq('published', true)
         .single();
@@ -67,15 +57,10 @@ class ApiService {
     try {
       const { data, error } = await (supabase as any)
         .from('publications')
-        .select(`
-          *,
-          categories(nom),
-          teams(nom),
-          media(url, type)
-        `)
+        .select('*')
         .eq('published', true)
         .eq('featured', true)
-        .order('date_publication', { ascending: false })
+        .order('created_at', { ascending: false })
         .limit(3);
 
       if (error) throw error;
@@ -87,18 +72,14 @@ class ApiService {
   }
 
   // Events
-  async getEvents(status?: 'a_venir' | 'termine') {
+  async getEvents(status?: 'upcoming' | 'past') {
     try {
       let query = (supabase as any)
         .from('events')
-        .select(`
-          *,
-          event_types(nom),
-          media(url, type)
-        `)
-        .order('date_debut', { ascending: status === 'a_venir' });
+        .select('*')
+        .order('date', { ascending: status === 'upcoming' });
 
-      if (status) query = query.eq('statut', status);
+      if (status) query = query.eq('status', status);
 
       const { data, error } = await query;
       if (error) throw error;
@@ -113,11 +94,7 @@ class ApiService {
     try {
       const { data, error } = await (supabase as any)
         .from('events')
-        .select(`
-          *,
-          event_types(nom),
-          media(url, type)
-        `)
+        .select('*')
         .eq('id', id)
         .single();
 
@@ -144,9 +121,6 @@ class ApiService {
         .single();
 
       if (error) throw error;
-
-      // Send confirmation email (implement this based on your email service)
-      await this.sendConfirmationEmail(eventId, participantData);
 
       return data as Participant;
     } catch (error) {
