@@ -513,7 +513,7 @@ const Admin = () => {
                           </Badge>
                         </div>
                         <p className="text-muted-foreground text-sm mb-2">
-                          {event.description_long.substring(0, 150)}...
+                          {event.description_long ? event.description_long.substring(0, 150) : 'Aucune description'}...
                         </p>
                         <div className="flex items-center space-x-4 text-xs text-muted-foreground">
                           <span>

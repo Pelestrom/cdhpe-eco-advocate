@@ -336,7 +336,27 @@ class ApiService {
       .order('created_at', { ascending: false });
 
     if (error) throw error;
-    return data as Event[];
+    
+    // Map database columns to Event interface
+    return (data || []).map((event: any) => ({
+      id: event.id,
+      titre: event.title || '',
+      description_long: event.description || '',
+      statut: event.status === 'upcoming' ? 'a_venir' : 'termine',
+      date_debut: event.date,
+      date_fin: event.end_date,
+      heure: event.time,
+      lieu: event.location || '',
+      type_event_id: event.type,
+      keywords: event.tags || [],
+      media_id: event.image_url,
+      participants_count: event.current_participants || 0,
+      max_participants: event.max_participants || 100,
+      prix: event.price,
+      gratuit: event.is_free !== undefined ? event.is_free : true,
+      created_at: event.created_at,
+      updated_at: event.updated_at
+    })) as Event[];
   }
 
   async adminCreateEvent(event: Partial<any>) {
