@@ -14,13 +14,251 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      contact_messages: {
+        Row: {
+          created_at: string | null
+          email: string
+          help_type: string
+          id: string
+          message: string
+          name: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          help_type: string
+          id?: string
+          message: string
+          name: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          help_type?: string
+          id?: string
+          message?: string
+          name?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      event_registrations: {
+        Row: {
+          created_at: string | null
+          email: string
+          event_id: string
+          id: string
+          name: string
+          status: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          event_id: string
+          id?: string
+          name: string
+          status?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          event_id?: string
+          id?: string
+          name?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_registrations_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          created_at: string | null
+          current_participants: number | null
+          date: string
+          description: string
+          end_date: string | null
+          id: string
+          image_url: string | null
+          is_free: boolean | null
+          location: string
+          max_participants: number | null
+          organizer: string
+          price: string | null
+          registration_deadline: string | null
+          status: string
+          tags: string[] | null
+          time: string
+          title: string
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          current_participants?: number | null
+          date: string
+          description: string
+          end_date?: string | null
+          id?: string
+          image_url?: string | null
+          is_free?: boolean | null
+          location: string
+          max_participants?: number | null
+          organizer?: string
+          price?: string | null
+          registration_deadline?: string | null
+          status?: string
+          tags?: string[] | null
+          time: string
+          title: string
+          type?: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          current_participants?: number | null
+          date?: string
+          description?: string
+          end_date?: string | null
+          id?: string
+          image_url?: string | null
+          is_free?: boolean | null
+          location?: string
+          max_participants?: number | null
+          organizer?: string
+          price?: string | null
+          registration_deadline?: string | null
+          status?: string
+          tags?: string[] | null
+          time?: string
+          title?: string
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      media: {
+        Row: {
+          created_at: string | null
+          event_id: string | null
+          id: string
+          mime_type: string | null
+          name: string
+          publication_id: string | null
+          size_bytes: number | null
+          type: string
+          url: string
+        }
+        Insert: {
+          created_at?: string | null
+          event_id?: string | null
+          id?: string
+          mime_type?: string | null
+          name: string
+          publication_id?: string | null
+          size_bytes?: number | null
+          type: string
+          url: string
+        }
+        Update: {
+          created_at?: string | null
+          event_id?: string | null
+          id?: string
+          mime_type?: string | null
+          name?: string
+          publication_id?: string | null
+          size_bytes?: number | null
+          type?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "media_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "media_publication_id_fkey"
+            columns: ["publication_id"]
+            isOneToOne: false
+            referencedRelation: "publications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      publications: {
+        Row: {
+          author: string
+          category: string
+          content: string
+          created_at: string | null
+          featured: boolean | null
+          id: string
+          image_url: string | null
+          media_url: string | null
+          published: boolean | null
+          slug: string
+          summary: string
+          title: string
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          author?: string
+          category: string
+          content: string
+          created_at?: string | null
+          featured?: boolean | null
+          id?: string
+          image_url?: string | null
+          media_url?: string | null
+          published?: boolean | null
+          slug: string
+          summary: string
+          title: string
+          type?: string
+          updated_at?: string | null
+        }
+        Update: {
+          author?: string
+          category?: string
+          content?: string
+          created_at?: string | null
+          featured?: boolean | null
+          id?: string
+          image_url?: string | null
+          media_url?: string | null
+          published?: boolean | null
+          slug?: string
+          summary?: string
+          title?: string
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_slug: {
+        Args: { title: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
