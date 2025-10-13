@@ -14,6 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_logs: {
+        Row: {
+          action: string
+          created_at: string | null
+          details: Json | null
+          id: string
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+        }
+        Relationships: []
+      }
+      categories: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          nom: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          nom: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          nom?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           created_at: string | null
@@ -82,6 +127,30 @@ export type Database = {
           },
         ]
       }
+      event_types: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          nom: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          nom: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          nom?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           created_at: string | null
@@ -92,8 +161,10 @@ export type Database = {
           id: string
           image_url: string | null
           is_free: boolean | null
+          keywords: string[] | null
           location: string
           max_participants: number | null
+          media_id: string | null
           organizer: string
           price: string | null
           registration_deadline: string | null
@@ -102,6 +173,7 @@ export type Database = {
           time: string
           title: string
           type: string
+          type_event_id: string | null
           updated_at: string | null
         }
         Insert: {
@@ -113,8 +185,10 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_free?: boolean | null
+          keywords?: string[] | null
           location: string
           max_participants?: number | null
+          media_id?: string | null
           organizer?: string
           price?: string | null
           registration_deadline?: string | null
@@ -123,6 +197,7 @@ export type Database = {
           time: string
           title: string
           type?: string
+          type_event_id?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -134,8 +209,10 @@ export type Database = {
           id?: string
           image_url?: string | null
           is_free?: boolean | null
+          keywords?: string[] | null
           location?: string
           max_participants?: number | null
+          media_id?: string | null
           organizer?: string
           price?: string | null
           registration_deadline?: string | null
@@ -144,9 +221,25 @@ export type Database = {
           time?: string
           title?: string
           type?: string
+          type_event_id?: string | null
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "events_media_id_fkey"
+            columns: ["media_id"]
+            isOneToOne: false
+            referencedRelation: "media"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "events_type_event_id_fkey"
+            columns: ["type_event_id"]
+            isOneToOne: false
+            referencedRelation: "event_types"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       media: {
         Row: {
@@ -202,9 +295,11 @@ export type Database = {
       publications: {
         Row: {
           author: string
+          categorie_id: string | null
           category: string
           content: string
           created_at: string | null
+          equipe_id: string | null
           featured: boolean | null
           id: string
           image_url: string | null
@@ -214,13 +309,16 @@ export type Database = {
           summary: string
           title: string
           type: string
+          type_media_principal: string | null
           updated_at: string | null
         }
         Insert: {
           author?: string
+          categorie_id?: string | null
           category: string
           content: string
           created_at?: string | null
+          equipe_id?: string | null
           featured?: boolean | null
           id?: string
           image_url?: string | null
@@ -230,13 +328,16 @@ export type Database = {
           summary: string
           title: string
           type?: string
+          type_media_principal?: string | null
           updated_at?: string | null
         }
         Update: {
           author?: string
+          categorie_id?: string | null
           category?: string
           content?: string
           created_at?: string | null
+          equipe_id?: string | null
           featured?: boolean | null
           id?: string
           image_url?: string | null
@@ -246,6 +347,76 @@ export type Database = {
           summary?: string
           title?: string
           type?: string
+          type_media_principal?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "publications_categorie_id_fkey"
+            columns: ["categorie_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "publications_equipe_id_fkey"
+            columns: ["equipe_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_info: {
+        Row: {
+          actif: boolean | null
+          created_at: string | null
+          details: Json | null
+          id: string
+          nom: string
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          actif?: boolean | null
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          nom: string
+          type: string
+          updated_at?: string | null
+        }
+        Update: {
+          actif?: boolean | null
+          created_at?: string | null
+          details?: Json | null
+          id?: string
+          nom?: string
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      teams: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          nom: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          nom: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          nom?: string
           updated_at?: string | null
         }
         Relationships: []

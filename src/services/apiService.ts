@@ -191,6 +191,38 @@ class ApiService {
     }
   }
 
+  async adminCreateCategory(category: { nom: string; description?: string }) {
+    const { data, error } = await (supabase as any)
+      .from('categories')
+      .insert(category)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data as Category;
+  }
+
+  async adminUpdateCategory(id: string, updates: { nom?: string; description?: string }) {
+    const { data, error } = await (supabase as any)
+      .from('categories')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data as Category;
+  }
+
+  async adminDeleteCategory(id: string) {
+    const { error } = await (supabase as any)
+      .from('categories')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  }
+
   // Teams
   async getTeams() {
     try {
@@ -207,6 +239,38 @@ class ApiService {
     }
   }
 
+  async adminCreateTeam(team: { nom: string; description?: string }) {
+    const { data, error } = await (supabase as any)
+      .from('teams')
+      .insert(team)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data as Team;
+  }
+
+  async adminUpdateTeam(id: string, updates: { nom?: string; description?: string }) {
+    const { data, error } = await (supabase as any)
+      .from('teams')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data as Team;
+  }
+
+  async adminDeleteTeam(id: string) {
+    const { error } = await (supabase as any)
+      .from('teams')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  }
+
   // Event types
   async getEventTypes() {
     try {
@@ -221,6 +285,38 @@ class ApiService {
       console.error('Error fetching event types:', error);
       return [];
     }
+  }
+
+  async adminCreateEventType(eventType: { nom: string; description?: string }) {
+    const { data, error } = await (supabase as any)
+      .from('event_types')
+      .insert(eventType)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data as EventType;
+  }
+
+  async adminUpdateEventType(id: string, updates: { nom?: string; description?: string }) {
+    const { data, error } = await (supabase as any)
+      .from('event_types')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data as EventType;
+  }
+
+  async adminDeleteEventType(id: string) {
+    const { error } = await (supabase as any)
+      .from('event_types')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
   }
 
   // Email service (placeholder - implement based on your choice)
@@ -261,7 +357,11 @@ class ApiService {
   async adminGetPublications() {
     const { data, error } = await (supabase as any)
       .from('publications')
-      .select('*')
+      .select(`
+        *,
+        categories:categorie_id (id, nom),
+        teams:equipe_id (id, nom)
+      `)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
@@ -269,22 +369,20 @@ class ApiService {
   }
 
   async adminCreatePublication(publication: Partial<any>) {
-    // Generate slug from title
-    const slug = this.generateSlug(publication.title || publication.titre || '');
-    
     const { data, error } = await (supabase as any)
       .from('publications')
       .insert({ 
         title: publication.title || publication.titre,
         summary: publication.summary || publication.chapeau,
         content: publication.content || publication.contenu_long,
-        category: publication.category || publication.categorie_id,
+        type: publication.type_media_principal || 'texte',
+        categorie_id: publication.categorie_id,
+        equipe_id: publication.equipe_id,
         author: publication.author || 'CDHPE',
         featured: publication.featured || false,
         published: publication.published !== undefined ? publication.published : true,
         image_url: publication.image_url,
-        media_url: publication.media_url,
-        slug
+        media_url: publication.media_url
       })
       .select()
       .single();
@@ -300,7 +398,9 @@ class ApiService {
     if (updates.title || updates.titre) updateData.title = updates.title || updates.titre;
     if (updates.summary || updates.chapeau) updateData.summary = updates.summary || updates.chapeau;
     if (updates.content || updates.contenu_long) updateData.content = updates.content || updates.contenu_long;
-    if (updates.category || updates.categorie_id) updateData.category = updates.category || updates.categorie_id;
+    if (updates.type_media_principal) updateData.type = updates.type_media_principal;
+    if (updates.categorie_id !== undefined) updateData.categorie_id = updates.categorie_id;
+    if (updates.equipe_id !== undefined) updateData.equipe_id = updates.equipe_id;
     if (updates.author) updateData.author = updates.author;
     if (updates.featured !== undefined) updateData.featured = updates.featured;
     if (updates.published !== undefined) updateData.published = updates.published;
@@ -332,7 +432,11 @@ class ApiService {
   async adminGetEvents() {
     const { data, error } = await (supabase as any)
       .from('events')
-      .select('*')
+      .select(`
+        *,
+        event_types:type_event_id (id, nom),
+        media:media_id (id, url)
+      `)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
@@ -347,15 +451,17 @@ class ApiService {
       date_fin: event.end_date,
       heure: event.time,
       lieu: event.location || '',
-      type_event_id: event.type,
-      keywords: event.tags || [],
-      media_id: event.image_url,
+      type_event_id: event.type_event_id,
+      keywords: event.keywords || [],
+      media_id: event.media_id,
       participants_count: event.current_participants || 0,
       max_participants: event.max_participants || 100,
       prix: event.price,
       gratuit: event.is_free !== undefined ? event.is_free : true,
       created_at: event.created_at,
-      updated_at: event.updated_at
+      updated_at: event.updated_at,
+      event_types: event.event_types,
+      media: event.media
     })) as Event[];
   }
 
@@ -369,14 +475,15 @@ class ApiService {
         end_date: event.end_date || event.date_fin,
         time: event.time || event.heure,
         location: event.location || event.lieu,
-        type: event.type || 'Conférence',
-        status: event.status || event.statut || 'upcoming',
+        type_event_id: event.type_event_id,
+        keywords: event.keywords || [],
+        media_id: event.media_id,
+        status: event.status || (event.statut === 'a_venir' ? 'upcoming' : 'termine') || 'upcoming',
         max_participants: event.max_participants || 100,
         current_participants: 0,
         is_free: event.is_free !== undefined ? event.is_free : event.gratuit !== undefined ? event.gratuit : true,
         price: event.price || event.prix,
         registration_deadline: event.registration_deadline || event.date || event.date_debut,
-        tags: event.tags || event.keywords || [],
         image_url: event.image_url,
         organizer: event.organizer || 'CDHPE'
       })
@@ -397,14 +504,17 @@ class ApiService {
     if (updates.end_date || updates.date_fin) updateData.end_date = updates.end_date || updates.date_fin;
     if (updates.time || updates.heure) updateData.time = updates.time || updates.heure;
     if (updates.location || updates.lieu) updateData.location = updates.location || updates.lieu;
-    if (updates.type) updateData.type = updates.type;
-    if (updates.status || updates.statut) updateData.status = updates.status || updates.statut;
+    if (updates.type_event_id !== undefined) updateData.type_event_id = updates.type_event_id;
+    if (updates.keywords !== undefined) updateData.keywords = updates.keywords;
+    if (updates.media_id !== undefined) updateData.media_id = updates.media_id;
+    if (updates.status || updates.statut) {
+      updateData.status = updates.status || (updates.statut === 'a_venir' ? 'upcoming' : 'termine');
+    }
     if (updates.max_participants) updateData.max_participants = updates.max_participants;
     if (updates.is_free !== undefined) updateData.is_free = updates.is_free;
     else if (updates.gratuit !== undefined) updateData.is_free = updates.gratuit;
     if (updates.price || updates.prix) updateData.price = updates.price || updates.prix;
     if (updates.registration_deadline) updateData.registration_deadline = updates.registration_deadline;
-    if (updates.tags || updates.keywords) updateData.tags = updates.tags || updates.keywords;
     if (updates.image_url) updateData.image_url = updates.image_url;
     if (updates.organizer) updateData.organizer = updates.organizer;
 
@@ -566,16 +676,74 @@ class ApiService {
     if (error) throw error;
   }
 
-  // Admin - Support Info (placeholder)
+  // Admin - Support Info
   async adminGetSupportInfo() {
-    // This table doesn't exist yet, return empty array
-    return [] as SupportInfo[];
+    try {
+      const { data, error } = await (supabase as any)
+        .from('support_info')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data as SupportInfo[];
+    } catch (error) {
+      console.error('Error fetching support info:', error);
+      return [];
+    }
   }
 
-  // Admin - Logs (placeholder)
+  async adminCreateSupportInfo(info: {
+    type: string;
+    nom: string;
+    details: Record<string, any>;
+    actif: boolean;
+  }) {
+    const { data, error } = await (supabase as any)
+      .from('support_info')
+      .insert(info)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data as SupportInfo;
+  }
+
+  async adminUpdateSupportInfo(id: string, updates: Partial<SupportInfo>) {
+    const { data, error } = await (supabase as any)
+      .from('support_info')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data as SupportInfo;
+  }
+
+  async adminDeleteSupportInfo(id: string) {
+    const { error } = await (supabase as any)
+      .from('support_info')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  }
+
+  // Admin - Logs
   async adminGetLogs() {
-    // This table doesn't exist yet, return empty array
-    return [] as AdminLog[];
+    try {
+      const { data, error } = await (supabase as any)
+        .from('admin_logs')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(100);
+
+      if (error) throw error;
+      return data as AdminLog[];
+    } catch (error) {
+      console.error('Error fetching logs:', error);
+      return [];
+    }
   }
 
 
