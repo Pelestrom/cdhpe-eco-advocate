@@ -37,6 +37,7 @@ export interface Publication {
   categorie_id?: string;
   equipe_id?: string;
   media_id?: string;
+  image_url?: string;
   featured: boolean;
   published: boolean;
   created_at: string;

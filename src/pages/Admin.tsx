@@ -382,7 +382,7 @@ const Admin = () => {
       equipe_id: pub.equipe_id || '',
       featured: pub.featured,
       published: pub.published,
-      image_url: pub.media_url || ''
+      image_url: pub.image_url || ''
     });
     setShowPublicationModal(true);
   };
