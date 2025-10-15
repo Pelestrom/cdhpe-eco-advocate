@@ -376,13 +376,13 @@ class ApiService {
         summary: publication.summary || publication.chapeau,
         content: publication.content || publication.contenu_long,
         type: publication.type_media_principal || 'texte',
-        categorie_id: publication.categorie_id,
-        equipe_id: publication.equipe_id,
+        categorie_id: publication.categorie_id || null,
+        equipe_id: publication.equipe_id || null,
         author: publication.author || 'CDHPE',
         featured: publication.featured || false,
         published: publication.published !== undefined ? publication.published : true,
-        image_url: publication.image_url,
-        media_url: publication.media_url
+        image_url: publication.image_url || null,
+        media_url: publication.media_url || null
       })
       .select()
       .single();
@@ -399,13 +399,13 @@ class ApiService {
     if (updates.summary || updates.chapeau) updateData.summary = updates.summary || updates.chapeau;
     if (updates.content || updates.contenu_long) updateData.content = updates.content || updates.contenu_long;
     if (updates.type_media_principal) updateData.type = updates.type_media_principal;
-    if (updates.categorie_id !== undefined) updateData.categorie_id = updates.categorie_id;
-    if (updates.equipe_id !== undefined) updateData.equipe_id = updates.equipe_id;
+    if (updates.categorie_id !== undefined) updateData.categorie_id = updates.categorie_id || null;
+    if (updates.equipe_id !== undefined) updateData.equipe_id = updates.equipe_id || null;
     if (updates.author) updateData.author = updates.author;
     if (updates.featured !== undefined) updateData.featured = updates.featured;
     if (updates.published !== undefined) updateData.published = updates.published;
-    if (updates.image_url) updateData.image_url = updates.image_url;
-    if (updates.media_url) updateData.media_url = updates.media_url;
+    if (updates.image_url !== undefined) updateData.image_url = updates.image_url || null;
+    if (updates.media_url !== undefined) updateData.media_url = updates.media_url || null;
 
     const { data, error } = await (supabase as any)
       .from('publications')
@@ -472,19 +472,19 @@ class ApiService {
         title: event.title || event.titre,
         description: event.description || event.description_long,
         date: event.date || event.date_debut,
-        end_date: event.end_date || event.date_fin,
+        end_date: event.end_date || event.date_fin || null,
         time: event.time || event.heure,
         location: event.location || event.lieu,
-        type_event_id: event.type_event_id,
+        type_event_id: event.type_event_id || null,
         keywords: event.keywords || [],
-        media_id: event.media_id,
-        status: event.status || (event.statut === 'a_venir' ? 'upcoming' : 'termine') || 'upcoming',
+        media_id: event.media_id || null,
+        status: event.status || (event.statut === 'a_venir' ? 'upcoming' : 'past') || 'upcoming',
         max_participants: event.max_participants || 100,
         current_participants: 0,
         is_free: event.is_free !== undefined ? event.is_free : event.gratuit !== undefined ? event.gratuit : true,
-        price: event.price || event.prix,
-        registration_deadline: event.registration_deadline || event.date || event.date_debut,
-        image_url: event.image_url,
+        price: event.price || event.prix || null,
+        registration_deadline: event.registration_deadline || event.date || event.date_debut || null,
+        image_url: event.image_url || null,
         organizer: event.organizer || 'CDHPE'
       })
       .select()
@@ -501,21 +501,21 @@ class ApiService {
     if (updates.title || updates.titre) updateData.title = updates.title || updates.titre;
     if (updates.description || updates.description_long) updateData.description = updates.description || updates.description_long;
     if (updates.date || updates.date_debut) updateData.date = updates.date || updates.date_debut;
-    if (updates.end_date || updates.date_fin) updateData.end_date = updates.end_date || updates.date_fin;
+    if (updates.end_date !== undefined || updates.date_fin !== undefined) updateData.end_date = updates.end_date || updates.date_fin || null;
     if (updates.time || updates.heure) updateData.time = updates.time || updates.heure;
     if (updates.location || updates.lieu) updateData.location = updates.location || updates.lieu;
-    if (updates.type_event_id !== undefined) updateData.type_event_id = updates.type_event_id;
+    if (updates.type_event_id !== undefined) updateData.type_event_id = updates.type_event_id || null;
     if (updates.keywords !== undefined) updateData.keywords = updates.keywords;
-    if (updates.media_id !== undefined) updateData.media_id = updates.media_id;
+    if (updates.media_id !== undefined) updateData.media_id = updates.media_id || null;
     if (updates.status || updates.statut) {
-      updateData.status = updates.status || (updates.statut === 'a_venir' ? 'upcoming' : 'termine');
+      updateData.status = updates.status || (updates.statut === 'a_venir' ? 'upcoming' : 'past');
     }
     if (updates.max_participants) updateData.max_participants = updates.max_participants;
     if (updates.is_free !== undefined) updateData.is_free = updates.is_free;
     else if (updates.gratuit !== undefined) updateData.is_free = updates.gratuit;
-    if (updates.price || updates.prix) updateData.price = updates.price || updates.prix;
-    if (updates.registration_deadline) updateData.registration_deadline = updates.registration_deadline;
-    if (updates.image_url) updateData.image_url = updates.image_url;
+    if (updates.price !== undefined || updates.prix !== undefined) updateData.price = updates.price || updates.prix || null;
+    if (updates.registration_deadline !== undefined) updateData.registration_deadline = updates.registration_deadline || null;
+    if (updates.image_url !== undefined) updateData.image_url = updates.image_url || null;
     if (updates.organizer) updateData.organizer = updates.organizer;
 
     const { data, error } = await (supabase as any)
