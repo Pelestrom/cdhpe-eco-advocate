@@ -369,20 +369,27 @@ class ApiService {
   }
 
   async adminCreatePublication(publication: Partial<any>) {
+    // Map 'texte' to 'text' and 'image' to 'photo' for database constraint
+    let type = publication.type_media_principal || 'texte';
+    if (type === 'texte') type = 'text';
+    if (type === 'image') type = 'photo';
+
     const { data, error } = await (supabase as any)
       .from('publications')
       .insert({ 
         title: publication.title || publication.titre,
         summary: publication.summary || publication.chapeau,
         content: publication.content || publication.contenu_long,
-        type: publication.type_media_principal || 'texte',
+        type: type,
         categorie_id: publication.categorie_id || null,
         equipe_id: publication.equipe_id || null,
         author: publication.author || 'CDHPE',
         featured: publication.featured || false,
         published: publication.published !== undefined ? publication.published : true,
         image_url: publication.image_url || null,
-        media_url: publication.media_url || null
+        media_url: publication.media_url || null,
+        slug: this.generateSlug(publication.title || publication.titre),
+        category: 'General'
       })
       .select()
       .single();
@@ -398,7 +405,15 @@ class ApiService {
     if (updates.title || updates.titre) updateData.title = updates.title || updates.titre;
     if (updates.summary || updates.chapeau) updateData.summary = updates.summary || updates.chapeau;
     if (updates.content || updates.contenu_long) updateData.content = updates.content || updates.contenu_long;
-    if (updates.type_media_principal) updateData.type = updates.type_media_principal;
+    
+    // Map 'texte' to 'text' and 'image' to 'photo' for database constraint
+    if (updates.type_media_principal) {
+      let type = updates.type_media_principal;
+      if (type === 'texte') type = 'text';
+      if (type === 'image') type = 'photo';
+      updateData.type = type;
+    }
+    
     if (updates.categorie_id !== undefined) updateData.categorie_id = updates.categorie_id || null;
     if (updates.equipe_id !== undefined) updateData.equipe_id = updates.equipe_id || null;
     if (updates.author) updateData.author = updates.author;
@@ -466,6 +481,12 @@ class ApiService {
   }
 
   async adminCreateEvent(event: Partial<any>) {
+    // Handle empty time field - if empty string, set to null or a default value
+    let timeValue = event.time || event.heure;
+    if (timeValue === '' || timeValue === undefined) {
+      timeValue = '00:00:00'; // Default time if not provided
+    }
+
     const { data, error } = await (supabase as any)
       .from('events')
       .insert({
@@ -473,7 +494,7 @@ class ApiService {
         description: event.description || event.description_long,
         date: event.date || event.date_debut,
         end_date: event.end_date || event.date_fin || null,
-        time: event.time || event.heure,
+        time: timeValue,
         location: event.location || event.lieu,
         type_event_id: event.type_event_id || null,
         keywords: event.keywords || [],
@@ -502,7 +523,14 @@ class ApiService {
     if (updates.description || updates.description_long) updateData.description = updates.description || updates.description_long;
     if (updates.date || updates.date_debut) updateData.date = updates.date || updates.date_debut;
     if (updates.end_date !== undefined || updates.date_fin !== undefined) updateData.end_date = updates.end_date || updates.date_fin || null;
-    if (updates.time || updates.heure) updateData.time = updates.time || updates.heure;
+    
+    // Handle empty time field
+    if (updates.time || updates.heure) {
+      let timeValue = updates.time || updates.heure;
+      if (timeValue === '') timeValue = '00:00:00';
+      updateData.time = timeValue;
+    }
+    
     if (updates.location || updates.lieu) updateData.location = updates.location || updates.lieu;
     if (updates.type_event_id !== undefined) updateData.type_event_id = updates.type_event_id || null;
     if (updates.keywords !== undefined) updateData.keywords = updates.keywords;
