@@ -389,7 +389,7 @@ class ApiService {
         image_url: publication.image_url || null,
         media_url: publication.media_url || null,
         slug: this.generateSlug(publication.title || publication.titre),
-        category: 'General'
+        category: publication.category || 'Général'
       })
       .select()
       .single();
